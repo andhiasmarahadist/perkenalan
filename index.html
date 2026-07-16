@@ -334,16 +334,21 @@
                 <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-slate-400 to-slate-300"></div>
                 <div class="text-center mb-8 mt-2">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100 transform rotate-45"><i class="fas fa-lock text-2xl text-slate-400 -rotate-45"></i></div>
-                    <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Akses Admin</h2>
+                    <h2 id="title-auth" class="text-2xl font-extrabold text-slate-800 tracking-tight">Akses Admin</h2>
                 </div>
-                <form id="form-login" onsubmit="handleLoginAdmin(event)" class="space-y-5">
+                <form id="form-login" onsubmit="handleAuthAdmin(event)" class="space-y-4">
+                    <input type="hidden" id="auth-mode" value="login">
                     <div>
-                        <input type="password" id="login-password" required placeholder="Masukkan Password Admin" class="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none text-sm font-bold text-center shadow-inner">
+                        <input type="email" id="login-email" required placeholder="Email Admin" class="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none text-sm font-bold text-center shadow-inner mb-4">
+                        <input type="password" id="login-password" required placeholder="Masukkan Password" minlength="6" class="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none text-sm font-bold text-center shadow-inner">
                     </div>
-                    <button type="submit" class="w-full bg-slate-800 text-white font-extrabold text-sm py-3.5 rounded-xl hover:bg-slate-900 shadow-md mt-4 transition">Masuk Sistem</button>
+                    <button type="submit" id="btn-auth" class="w-full bg-slate-800 text-white font-extrabold text-sm py-3.5 rounded-xl hover:bg-slate-900 shadow-md mt-2 transition">Masuk Sistem</button>
                 </form>
-                <div id="demo-credentials" class="mt-8 text-xs text-center text-slate-500 bg-slate-50 p-4 rounded-xl hidden border shadow-inner font-medium">
-                    <i class="fas fa-info-circle text-indigo-500"></i> Mode Preview Aktif <br>Gunakan password apa saja untuk login dummy.
+                <div class="mt-6 text-center">
+                    <button type="button" onclick="toggleAuthMode()" id="btn-toggle-auth" class="text-xs text-indigo-500 font-bold hover:text-indigo-700 transition underline underline-offset-4">Belum ada akun? Buat Akun (Setup Awal)</button>
+                </div>
+                <div id="demo-credentials" class="mt-6 text-xs text-center text-slate-500 bg-slate-50 p-4 rounded-xl hidden border shadow-inner font-medium">
+                    <i class="fas fa-info-circle text-indigo-500"></i> Mode Preview Aktif <br>Gunakan email & password apa saja untuk test.
                 </div>
             </div>
         </div>
@@ -806,21 +811,57 @@
             document.getElementById('form-pesan').reset();
         }
 
-        window.handleLoginAdmin = async function(e) {
+        window.toggleAuthMode = function() {
+            const modeInput = document.getElementById('auth-mode');
+            const btnAuth = document.getElementById('btn-auth');
+            const btnToggle = document.getElementById('btn-toggle-auth');
+            const titleAuth = document.getElementById('title-auth');
+
+            if(modeInput.value === 'login') {
+                modeInput.value = 'register';
+                btnAuth.innerText = 'Daftar & Buat Akun';
+                btnToggle.innerText = 'Sudah punya akun? Masuk di sini';
+                titleAuth.innerText = 'Registrasi Admin';
+            } else {
+                modeInput.value = 'login';
+                btnAuth.innerText = 'Masuk Sistem';
+                btnToggle.innerText = 'Belum ada akun? Buat Akun (Setup Awal)';
+                titleAuth.innerText = 'Akses Admin';
+            }
+        }
+
+        window.handleAuthAdmin = async function(e) {
             e.preventDefault();
+            const em = document.getElementById('login-email').value;
             const pw = document.getElementById('login-password').value;
-            const em = appState.profil.email || "admin@sekolah.id";
+            const mode = document.getElementById('auth-mode').value;
 
             if(IS_PREVIEW) {
                 appState.isLoggedIn = true; updateNavState(); fetchAdminData();
-                Swal.fire({title: 'Login Preview', icon: 'success', timer: 1000, showConfirmButton: false});
+                Swal.fire({title: 'Mode Preview', icon: 'success', timer: 1000, showConfirmButton: false});
             } else {
                 try {
-                    Swal.fire({title:'Login...', didOpen: ()=>Swal.showLoading()});
-                    await auth.signInWithEmailAndPassword(em, pw);
-                    Swal.fire({title: 'Sukses', icon: 'success', timer:1000});
+                    Swal.fire({title: mode === 'login' ? 'Mencoba Login...' : 'Mendaftarkan Akun...', didOpen: ()=>Swal.showLoading()});
+                    
+                    if (mode === 'login') {
+                        await auth.signInWithEmailAndPassword(em, pw);
+                        Swal.fire({title: 'Sukses', icon: 'success', timer:1000, showConfirmButton: false});
+                    } else {
+                        // Proses Register Akun Baru
+                        await auth.createUserWithEmailAndPassword(em, pw);
+                        Swal.fire({title: 'Pendaftaran Berhasil!', text: 'Akun admin pertama Anda telah berhasil dibuat.', icon: 'success', timer:2000});
+                    }
+                    
                     document.getElementById('form-login').reset();
-                } catch(err) { Swal.fire('Gagal', err.message, 'error'); }
+                    // Reset UI kembali ke mode login
+                    if(mode === 'register') toggleAuthMode();
+                    
+                } catch(err) { 
+                    let errorMsg = err.message;
+                    if(err.code === 'auth/email-already-in-use') errorMsg = 'Email ini sudah terdaftar. Silakan gunakan menu masuk/login.';
+                    if(err.code === 'auth/invalid-credential') errorMsg = 'Email atau password salah.';
+                    Swal.fire('Gagal', errorMsg, 'error'); 
+                }
             }
         }
 
