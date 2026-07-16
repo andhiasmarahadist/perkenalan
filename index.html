@@ -13,6 +13,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- SheetJS (Untuk Baca & Tulis File Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <!-- Firebase Compat Library (Solusi Tangguh untuk GitHub Pages/Hosting) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -509,7 +515,7 @@
         </div>
     </main>
 
-    <script type="module">
+    <script>
         // ==========================================
         // 1. KONFIGURASI FIREBASE & APLIKASI
         // ==========================================
@@ -525,16 +531,13 @@
             appId: "APP_ID"
         };
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
         let app, auth, db;
         if(!IS_PREVIEW) {
             try {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
+                // Menggunakan Firebase Compat API yang sangat stabil di Hosting Statis/Github
+                app = firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
             } catch(e) {
                 console.error("Firebase init error", e);
             }
@@ -560,8 +563,9 @@
         let dummyPesan = [{ id: "p1", timestamp: new Date().toLocaleString('id-ID'), foto: "", nama: "Andi Saputra", nama_panggilan: "Andi", kelas: "X MIPA 1", isi: "Saya ingin terus praktik di Ruang TIK pak. Belajar koding sangat menyenangkan dan saya harap ada kelas tambahan." }];
 
         // ==========================================
+        // INISIALISASI UTAMA
         // ==========================================
-        window.onload = async () => {
+        async function runInit() {
             if (IS_PREVIEW) document.getElementById('demo-credentials').classList.remove('hidden');
             
             // Animasi Intro
@@ -577,7 +581,7 @@
 
             // Auth Observer if Live
             if(!IS_PREVIEW && auth) {
-                onAuthStateChanged(auth, (user) => {
+                auth.onAuthStateChanged((user) => {
                     appState.isLoggedIn = !!user;
                     updateNavState();
                     if(user) fetchAdminData();
@@ -585,7 +589,14 @@
                 await autoSetupDatabase();
             }
             await fetchPublicData();
-        };
+        }
+        
+        // Eksekusi init dengan aman secara langsung
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', runInit);
+        } else {
+            runInit();
+        }
 
         window.mulaiAplikasi = function() {
             const introView = document.getElementById('view-intro');
@@ -599,13 +610,13 @@
         async function autoSetupDatabase() {
             if(IS_PREVIEW) return;
             try {
-                const profilRef = doc(db, "pengaturan", "profil_guru");
-                const snap = await getDoc(profilRef);
-                if(!snap.exists()) {
+                const profilRef = db.collection("pengaturan").doc("profil_guru");
+                const snap = await profilRef.get();
+                if(!snap.exists) {
                     console.log("Database kosong. Menyuntikkan data awal...");
-                    await setDoc(profilRef, dummyProfil);
-                    for(let j of dummyJadwal) await addDoc(collection(db, "jadwal"), {hari: j.hari, waktu: j.waktu, kelas: j.kelas, keterangan: j.keterangan});
-                    for(let s of dummySiswa) await addDoc(collection(db, "siswa"), {nama: s.nama, kelas: s.kelas});
+                    await profilRef.set(dummyProfil);
+                    for(let j of dummyJadwal) await db.collection("jadwal").add({hari: j.hari, waktu: j.waktu, kelas: j.kelas, keterangan: j.keterangan});
+                    for(let s of dummySiswa) await db.collection("siswa").add({nama: s.nama, kelas: s.kelas});
                     console.log("Setup Selesai.");
                 }
             } catch(e) { console.error("Setup Error", e); }
@@ -671,13 +682,13 @@
                 appState.profil = dummyProfil; appState.jadwal = dummyJadwal; appState.siswa = dummySiswa;
             } else {
                 try {
-                    const pSnap = await getDoc(doc(db, "pengaturan", "profil_guru"));
-                    appState.profil = pSnap.exists() ? pSnap.data() : dummyProfil;
+                    const pSnap = await db.collection("pengaturan").doc("profil_guru").get();
+                    appState.profil = pSnap.exists ? pSnap.data() : dummyProfil;
                     
-                    const jSnap = await getDocs(collection(db, "jadwal"));
+                    const jSnap = await db.collection("jadwal").get();
                     appState.jadwal = jSnap.docs.map(d => ({id: d.id, ...d.data()}));
                     
-                    const sSnap = await getDocs(collection(db, "siswa"));
+                    const sSnap = await db.collection("siswa").get();
                     appState.siswa = sSnap.docs.map(d => ({id: d.id, ...d.data()}));
                 } catch(e) { console.error(e); }
             }
@@ -749,8 +760,6 @@
                     const img = new Image(); img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
-                        // Resolusi ditingkatkan secara drastis ke 1080px dan kualitas ke 95% 
-                        // agar foto sangat jelas (HD) tapi tetap aman dari limit ukuran 1MB Database Firebase
                         if(w > 1080) { h *= 1080/w; w = 1080; } canvas.width = w; canvas.height = h;
                         canvas.getContext('2d').drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.95));
                     }; img.onerror = reject;
@@ -776,7 +785,7 @@
             if(IS_PREVIEW) {
                 payload.id = "p"+Date.now(); dummyPesan.push(payload);
             } else {
-                try { await addDoc(collection(db, "pesan"), payload); } catch(err) { return Swal.fire('Error', err.message, 'error'); }
+                try { await db.collection("pesan").add(payload); } catch(err) { return Swal.fire('Error', err.message, 'error'); }
             }
             
             Swal.fire('Terkirim!', 'Pesan sudah masuk ke guru.', 'success');
@@ -786,7 +795,6 @@
         window.handleLoginAdmin = async function(e) {
             e.preventDefault();
             const pw = document.getElementById('login-password').value;
-            // Uses the profile email from Firebase, or defaults to dummy fallback admin@sekolah.id
             const em = appState.profil.email || "admin@sekolah.id";
 
             if(IS_PREVIEW) {
@@ -795,7 +803,7 @@
             } else {
                 try {
                     Swal.fire({title:'Login...', didOpen: ()=>Swal.showLoading()});
-                    await signInWithEmailAndPassword(auth, em, pw);
+                    await auth.signInWithEmailAndPassword(em, pw);
                     Swal.fire({title: 'Sukses', icon: 'success', timer:1000});
                     document.getElementById('form-login').reset();
                 } catch(err) { Swal.fire('Gagal', err.message, 'error'); }
@@ -804,14 +812,14 @@
 
         window.logoutAdmin = function() {
             if(IS_PREVIEW) { appState.isLoggedIn = false; updateNavState(); showView('view-beranda'); }
-            else { signOut(auth); showView('view-beranda'); }
+            else { auth.signOut(); showView('view-beranda'); }
         }
 
         async function fetchAdminData() {
             if(IS_PREVIEW) { appState.pesan = dummyPesan; }
             else {
                 try {
-                    const pSnap = await getDocs(query(collection(db, "pesan"), orderBy("timestamp", "desc")));
+                    const pSnap = await db.collection("pesan").orderBy("timestamp", "desc").get();
                     appState.pesan = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
                 } catch(e) { console.error(e); }
             }
@@ -860,7 +868,6 @@
                 filteredPesan = appState.pesan.filter(p => p.kelas === filterValue);
             }
             
-            // Simpan state pesan yang difilter saat ini untuk fitur navigasi Next/Prev
             window.currentFilteredPesan = filteredPesan;
 
             if (filteredPesan.length === 0) {
@@ -895,7 +902,6 @@
         }
 
         window.bacaPesan = function(id) {
-            // Gunakan daftar pesan yang sedang difilter di tabel
             const pesanList = window.currentFilteredPesan || appState.pesan;
             const idx = pesanList.findIndex(x => x.id === id);
             if(idx === -1) return;
@@ -904,7 +910,6 @@
             const imgSrc = p.foto ? p.foto : 'https://via.placeholder.com/400x400?text=No+Photo';
             const nickname = p.nama_panggilan || '-';
 
-            // Logika tombol Next / Prev
             const prevId = idx > 0 ? pesanList[idx - 1].id : null;
             const nextId = idx < pesanList.length - 1 ? pesanList[idx + 1].id : null;
             
@@ -912,13 +917,13 @@
             if (prevId) {
                 navHtml += `<button onclick="bacaPesan('${prevId}')" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-xl transition flex items-center shadow-sm"><i class="fas fa-chevron-left mr-2"></i> Sebelumnya</button>`;
             } else {
-                navHtml += `<div></div>`; // Spacer kiri
+                navHtml += `<div></div>`;
             }
             
             if (nextId) {
                 navHtml += `<button onclick="bacaPesan('${nextId}')" class="px-5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-bold rounded-xl transition flex items-center shadow-sm">Selanjutnya <i class="fas fa-chevron-right ml-2"></i></button>`;
             } else {
-                navHtml += `<div></div>`; // Spacer kanan
+                navHtml += `<div></div>`;
             }
             navHtml += `</div>`;
 
@@ -926,14 +931,11 @@
                 title: '<span class="text-xl font-extrabold text-slate-800">Detail Pesan Siswa</span>',
                 html: `
                     <div class="flex flex-col md:flex-row gap-6 text-left mt-2 items-stretch">
-                        <!-- Sisi Kiri: Foto Wajah (Maximized space coverage) -->
                         <div class="w-full md:w-5/12 shrink-0 flex flex-col justify-start">
                             <div class="w-full aspect-square relative rounded-2xl p-1 bg-gradient-to-tr from-indigo-200 to-purple-200 shadow-md overflow-hidden">
                                 <img src="${imgSrc}" class="w-full h-full object-cover rounded-xl border border-white">
                             </div>
                         </div>
-                        
-                        <!-- Sisi Kanan: Detail & Pesan -->
                         <div class="w-full md:w-7/12 flex flex-col justify-between">
                             <div class="border-b border-slate-100 pb-3">
                                 <h3 class="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight leading-tight">${p.nama}</h3>
@@ -942,12 +944,10 @@
                                     <span class="inline-flex items-center bg-emerald-50 text-emerald-700 text-[11px] px-2.5 py-1 rounded-md font-bold border border-emerald-100"><i class="fas fa-chalkboard text-emerald-500 mr-1.5 opacity-60"></i> ${p.kelas}</span>
                                 </div>
                             </div>
-                            
                             <div class="bg-slate-50 p-4 md:p-5 rounded-2xl border border-slate-200 shadow-inner flex-grow my-4 relative">
                                 <i class="fas fa-quote-left absolute top-3 left-3 md:top-4 md:left-4 text-slate-200 text-3xl"></i>
                                 <p class="text-slate-700 font-medium relative z-10 pl-8 md:pl-10 leading-relaxed text-sm md:text-base italic whitespace-pre-line">"${p.isi}"</p>
                             </div>
-                            
                             <p class="text-[10px] text-slate-400 font-bold text-right"><i class="far fa-clock mr-1"></i> Dikirim: ${p.timestamp}</p>
                         </div>
                     </div>
@@ -1005,7 +1005,7 @@
             else {
                 try { 
                     Swal.fire({title: 'Menyimpan...', didOpen: ()=>Swal.showLoading()});
-                    await setDoc(doc(db, "pengaturan", "profil_guru"), payload); 
+                    await db.collection("pengaturan").doc("profil_guru").set(payload); 
                     await fetchPublicData();
                     Swal.fire('Tersimpan', '', 'success'); 
                 } catch(err) { Swal.fire('Error', err.message, 'error'); }
@@ -1022,7 +1022,7 @@
             } else { 
                 try { 
                     Swal.fire({title: 'Menyimpan...', didOpen: ()=>Swal.showLoading()});
-                    await addDoc(collection(db, "jadwal"), p); 
+                    await db.collection("jadwal").add(p); 
                     document.getElementById('form-tambah-jadwal').reset(); 
                     await fetchPublicData(); await fetchAdminData(); 
                     Swal.fire('Sukses', 'Jadwal ditambahkan', 'success');
@@ -1039,7 +1039,7 @@
             } else { 
                 try {
                     Swal.fire({title: 'Menghapus...', didOpen: ()=>Swal.showLoading()});
-                    await deleteDoc(doc(db, "jadwal", id)); 
+                    await db.collection("jadwal").doc(id).delete(); 
                     await fetchPublicData(); await fetchAdminData(); 
                     Swal.close();
                 } catch(err){ Swal.fire('Error', err.message, 'error'); }
@@ -1056,7 +1056,7 @@
             } else { 
                 try { 
                     Swal.fire({title: 'Menyimpan...', didOpen: ()=>Swal.showLoading()});
-                    await addDoc(collection(db, "siswa"), p); 
+                    await db.collection("siswa").add(p); 
                     document.getElementById('form-tambah-siswa').reset(); 
                     await fetchPublicData(); await fetchAdminData(); 
                     Swal.fire('Sukses', 'Siswa ditambahkan', 'success');
@@ -1073,7 +1073,7 @@
             } else { 
                 try {
                     Swal.fire({title: 'Menghapus...', didOpen: ()=>Swal.showLoading()});
-                    await deleteDoc(doc(db, "siswa", id)); 
+                    await db.collection("siswa").doc(id).delete(); 
                     await fetchPublicData(); await fetchAdminData(); 
                     Swal.close();
                 } catch(err){ Swal.fire('Error', err.message, 'error'); }
@@ -1089,7 +1089,7 @@
             } else { 
                 try {
                     Swal.fire({title: 'Menghapus...', didOpen: ()=>Swal.showLoading()});
-                    await deleteDoc(doc(db, "pesan", id)); 
+                    await db.collection("pesan").doc(id).delete(); 
                     await fetchAdminData(); 
                     Swal.close();
                 } catch(err){ Swal.fire('Error', err.message, 'error'); }
@@ -1123,7 +1123,7 @@
                         for(let r of json) { 
                             const n = r.Nama||r.nama; const k = r.Kelas||r.kelas; 
                             if(n&&k) {
-                                await addDoc(collection(db, "siswa"), {nama: n, kelas: k}); 
+                                await db.collection("siswa").add({nama: n, kelas: k}); 
                                 successCount++;
                             }
                         }
@@ -1144,7 +1144,7 @@
             const b = document.getElementById('pwd-baru').value, k = document.getElementById('pwd-konfirm').value;
             if(b!==k) return Swal.fire('Gagal', 'Konfirmasi password salah', 'error');
             if(IS_PREVIEW) return Swal.fire('Preview', 'Tidak bisa ubah pass di mode preview.', 'info');
-            try { await updatePassword(auth.currentUser, b); Swal.fire('Sukses', 'Password diupdate', 'success'); document.getElementById('form-ubah-password').reset(); } 
+            try { await auth.currentUser.updatePassword(b); Swal.fire('Sukses', 'Password diupdate', 'success'); document.getElementById('form-ubah-password').reset(); } 
             catch(err) { Swal.fire('Gagal', err.message + ' (Mungkin butuh re-login)', 'error'); }
         }
 
