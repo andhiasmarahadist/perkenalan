@@ -93,9 +93,7 @@
 
         /* Responsive Navbar Tweaks for Mobile */
         @media (max-width: 768px) {
-            .bottom-nav-mobile { top: auto; bottom: 15px; }
-            .mobile-menu-up { top: auto; bottom: 100%; margin-bottom: 12px; margin-top: 0; border-radius: 1.5rem; }
-            main { pt-10; pb-28; }
+            .mobile-menu-down { top: 100%; bottom: auto; margin-top: 12px; margin-bottom: 0; border-radius: 1.5rem; }
         }
     </style>
 </head>
@@ -119,7 +117,7 @@
     </div>
 
     <!-- NAVBAR (Responsive Top/Bottom) -->
-    <nav class="fixed top-3 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-[94%] md:w-auto transition-all duration-300 bottom-nav-mobile">
+    <nav class="fixed top-3 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-[94%] md:w-auto transition-all duration-300">
         <div class="glass-nav rounded-full px-4 md:px-8 py-2.5 flex justify-between md:justify-center items-center gap-x-3 md:gap-x-8">
             <button onclick="toggleMobileMenu()" class="md:hidden text-slate-500 hover:text-indigo-600 p-2 focus:outline-none">
                 <i class="fas fa-bars text-xl"></i>
@@ -151,7 +149,7 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden absolute left-0 w-full glass-card bg-white/95 border-white rounded-[1.5rem] p-2 shadow-2xl overflow-hidden mobile-menu-up">
+        <div id="mobile-menu" class="hidden absolute left-0 w-full glass-card bg-white/95 border-white rounded-[1.5rem] p-2 shadow-2xl overflow-hidden mobile-menu-down">
             <div class="flex flex-col space-y-1" id="mobile-nav-public">
                 <button onclick="showView('view-beranda'); toggleMobileMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition">Beranda</button>
                 <button onclick="showView('view-tentang'); toggleMobileMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition">Tentang Saya</button>
@@ -172,7 +170,7 @@
         </div>
     </nav>
 
-    <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 pt-10 md:pt-36 pb-24 md:pb-12 relative z-10 flex flex-col justify-center min-h-screen">
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 pt-24 md:pt-36 pb-32 md:pb-12 relative z-10 flex flex-col justify-center min-h-screen">
         
         <!-- VIEW: BERANDA -->
         <div id="view-beranda" class="view-section hidden">
@@ -506,7 +504,7 @@
         </div>
 
         <!-- NAVIGATION BUTTONS (Mobile Bottom) -->
-        <div id="integrated-nav" class="mt-10 md:mt-16 flex justify-center hidden w-full">
+        <div id="integrated-nav" class="mt-10 md:mt-16 mb-10 md:mb-0 flex justify-center hidden w-full">
             <div class="flex items-center space-x-2 bg-white/70 backdrop-blur-xl px-2 py-2 rounded-full border border-white shadow-md">
                 <button onclick="navigateFlow(-1)" id="btn-prev" class="text-slate-500 hover:text-indigo-600 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full disabled:opacity-30"><i class="fas fa-chevron-left mr-2"></i> Kembali</button>
                 <div class="w-px h-5 bg-slate-300"></div>
@@ -519,17 +517,19 @@
         // ==========================================
         // 1. KONFIGURASI FIREBASE & APLIKASI
         // ==========================================
-        const IS_PREVIEW = true; // SET FALSE JIKA FIREBASE SUDAH DIISI CONFIG-NYA
+        const IS_PREVIEW = false; // SET FALSE JIKA FIREBASE SUDAH DIISI CONFIG-NYA
 
         // PASTE FIREBASE CONFIG ANDA DI SINI
         const firebaseConfig = {
-            apiKey: "API_KEY_ANDA",
-            authDomain: "PROJECT_ID.firebaseapp.com",
-            projectId: "PROJECT_ID",
-            storageBucket: "PROJECT_ID.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
+          apiKey: "AIzaSyAANuE51e_ybs5SES6IbV7clOnfhdV3zno",
+          authDomain: "perkenalan-bd3ad.firebaseapp.com",
+          projectId: "perkenalan-bd3ad",
+          storageBucket: "perkenalan-bd3ad.firebasestorage.app",
+          messagingSenderId: "176105501016",
+          appId: "1:176105501016:web:c9c9ebed7090801c82752d"
         };
+
+        const app = initializeApp(firebaseConfig);
 
         let app, auth, db;
         if(!IS_PREVIEW) {
