@@ -529,15 +529,22 @@
           appId: "1:176105501016:web:c9c9ebed7090801c82752d"
         };
 
-        const app = initializeApp(firebaseConfig);
-
         let app, auth, db;
         if(!IS_PREVIEW) {
             try {
                 // Menggunakan Firebase Compat API yang sangat stabil di Hosting Statis/Github
-                app = firebase.initializeApp(firebaseConfig);
+                if (!firebase.apps.length) {
+                    app = firebase.initializeApp(firebaseConfig);
+                } else {
+                    app = firebase.app();
+                }
                 auth = firebase.auth();
                 db = firebase.firestore();
+                
+                // Aktifkan offline persistence agar aplikasi tetap jalan walau offline
+                db.enablePersistence().catch(function(err) {
+                    console.warn("Firebase persistence error:", err.code);
+                });
             } catch(e) {
                 console.error("Firebase init error", e);
             }
@@ -619,7 +626,9 @@
                     for(let s of dummySiswa) await db.collection("siswa").add({nama: s.nama, kelas: s.kelas});
                     console.log("Setup Selesai.");
                 }
-            } catch(e) { console.error("Setup Error", e); }
+            } catch(e) { 
+                console.warn("Setup tertunda: Klien mungkin offline atau koneksi Firebase terblokir.", e.message); 
+            }
         }
 
         window.showView = function(targetId) {
@@ -690,7 +699,12 @@
                     
                     const sSnap = await db.collection("siswa").get();
                     appState.siswa = sSnap.docs.map(d => ({id: d.id, ...d.data()}));
-                } catch(e) { console.error(e); }
+                } catch(e) { 
+                    console.warn("Koneksi Firebase bermasalah, menggunakan data dummy sementara.", e.message);
+                    appState.profil = dummyProfil; 
+                    appState.jadwal = dummyJadwal; 
+                    appState.siswa = dummySiswa;
+                }
             }
             renderPublicUI();
         }
@@ -821,7 +835,10 @@
                 try {
                     const pSnap = await db.collection("pesan").orderBy("timestamp", "desc").get();
                     appState.pesan = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
-                } catch(e) { console.error(e); }
+                } catch(e) { 
+                    console.warn("Koneksi Firebase bermasalah, menggunakan data pesan dummy.", e.message);
+                    appState.pesan = dummyPesan;
+                }
             }
             renderAdminUI();
             showView('view-admin-dashboard');
