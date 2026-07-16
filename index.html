@@ -14,7 +14,7 @@
     <!-- SheetJS (Untuk Baca & Tulis File Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
-    <!-- Firebase Compat Library (Solusi Tangguh untuk GitHub Pages/Hosting) -->
+    <!-- Firebase Compat Library (Solusi Tangguh untuk GitHub Pages/Blogger) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -22,6 +22,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- PWA Setup (DI PERBAIKI: Tidak lagi menggunakan document.write yang menyebabkan blank page) -->
     <script>
         const manifestData = {
             "name": "Andhi Menyapa",
@@ -34,7 +35,11 @@
         };
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         const manifestURL = URL.createObjectURL(manifestBlob);
-        document.write(`<link rel="manifest" href="${manifestURL}">`);
+        
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
     </script>
 
     <style>
@@ -331,7 +336,6 @@
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100 transform rotate-45"><i class="fas fa-lock text-2xl text-slate-400 -rotate-45"></i></div>
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Akses Admin</h2>
                 </div>
-                <!-- Login form simplified to only take Password -->
                 <form id="form-login" onsubmit="handleLoginAdmin(event)" class="space-y-5">
                     <div>
                         <input type="password" id="login-password" required placeholder="Masukkan Password Admin" class="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none text-sm font-bold text-center shadow-inner">
@@ -517,22 +521,21 @@
         // ==========================================
         // 1. KONFIGURASI FIREBASE & APLIKASI
         // ==========================================
-        const IS_PREVIEW = false; // SET FALSE JIKA FIREBASE SUDAH DIISI CONFIG-NYA
+        const IS_PREVIEW = false; // SUDAH DISET FALSE (TERHUBUNG KE FIREBASE)
 
-        // PASTE FIREBASE CONFIG ANDA DI SINI
+        // CONFIG FIREBASE ANDA
         const firebaseConfig = {
-  apiKey: "AIzaSyAANuE51e_ybs5SES6IbV7clOnfhdV3zno",
-  authDomain: "perkenalan-bd3ad.firebaseapp.com",
-  projectId: "perkenalan-bd3ad",
-  storageBucket: "perkenalan-bd3ad.firebasestorage.app",
-  messagingSenderId: "176105501016",
-  appId: "1:176105501016:web:c9c9ebed7090801c82752d"
-};
+            apiKey: "AIzaSyAANuE51e_ybs5SES6IbV7clOnfhdV3zno",
+            authDomain: "perkenalan-bd3ad.firebaseapp.com",
+            projectId: "perkenalan-bd3ad",
+            storageBucket: "perkenalan-bd3ad.firebasestorage.app",
+            messagingSenderId: "176105501016",
+            appId: "1:176105501016:web:c9c9ebed7090801c82752d"
+        };
 
         let app, auth, db;
         if(!IS_PREVIEW) {
             try {
-                // Menggunakan Firebase Compat API yang sangat stabil di Hosting Statis/Github
                 if (!firebase.apps.length) {
                     app = firebase.initializeApp(firebaseConfig);
                 } else {
@@ -541,7 +544,6 @@
                 auth = firebase.auth();
                 db = firebase.firestore();
                 
-                // Aktifkan offline persistence agar aplikasi tetap jalan walau offline
                 db.enablePersistence().catch(function(err) {
                     console.warn("Firebase persistence error:", err.code);
                 });
@@ -586,7 +588,6 @@
                 btnLanjut.classList.remove('opacity-0', 'translate-y-8'); btnLanjut.classList.add('opacity-100', 'translate-y-0');
             }, 1800);
 
-            // Auth Observer if Live
             if(!IS_PREVIEW && auth) {
                 auth.onAuthStateChanged((user) => {
                     appState.isLoggedIn = !!user;
@@ -598,7 +599,6 @@
             await fetchPublicData();
         }
         
-        // Eksekusi init dengan aman secara langsung
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', runInit);
         } else {
@@ -627,7 +627,7 @@
                     console.log("Setup Selesai.");
                 }
             } catch(e) { 
-                console.warn("Setup tertunda: Klien mungkin offline atau koneksi Firebase terblokir.", e.message); 
+                console.warn("Setup tertunda: Pastikan Aturan (Rules) Firestore Firebase Anda mengizinkan read/write.", e.message); 
             }
         }
 
