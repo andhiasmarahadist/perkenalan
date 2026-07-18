@@ -12,10 +12,9 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <!-- SheetJS (Untuk Baca & Template Excel) -->
+    <!-- CDNs untuk Export File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- ExcelJS & FileSaver (Untuk Tulis/Export Excel dengan Gambar Visual) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <!-- Firebase Compat Library -->
@@ -125,7 +124,7 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (Responsive Top/Bottom) -->
     <nav class="fixed top-3 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-[94%] md:w-auto transition-all duration-300">
         <div class="glass-nav rounded-full px-4 md:px-8 py-2.5 flex justify-between md:justify-center items-center gap-x-3 md:gap-x-8">
             <button onclick="toggleMobileMenu()" class="md:hidden text-slate-500 hover:text-indigo-600 p-2 focus:outline-none">
@@ -472,8 +471,8 @@
                         <select id="filter-kelas-pesan" onchange="renderAdminPesan()" class="w-full sm:w-auto px-4 py-2.5 bg-white border border-slate-200 focus:border-indigo-400 rounded-xl outline-none text-sm font-bold text-slate-700 shadow-sm cursor-pointer">
                             <option value="">Semua Kelas</option>
                         </select>
-                        <button onclick="downloadPesanExcel()" class="w-full sm:w-auto bg-green-600 text-white px-5 py-2.5 rounded-xl font-extrabold text-sm shadow-md hover:bg-green-700 transition flex items-center justify-center whitespace-nowrap">
-                            <i class="fas fa-download mr-2"></i> Unduh Excel
+                        <button onclick="downloadPesanZip()" class="w-full sm:w-auto bg-green-600 text-white px-5 py-2.5 rounded-xl font-extrabold text-sm shadow-md hover:bg-green-700 transition flex items-center justify-center whitespace-nowrap">
+                            <i class="fas fa-file-archive mr-2"></i> Unduh ZIP (Data & Foto)
                         </button>
                     </div>
                 </div>
@@ -514,9 +513,10 @@
         <!-- NAVIGATION BUTTONS (Mobile Bottom) -->
         <div id="integrated-nav" class="mt-10 md:mt-16 mb-10 md:mb-0 flex justify-center hidden w-full">
             <div class="flex items-center space-x-2 bg-white/70 backdrop-blur-xl px-2 py-2 rounded-full border border-white shadow-md">
-                <button onclick="navigateFlow(-1)" id="btn-prev" class="text-slate-500 hover:text-indigo-600 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full disabled:opacity-30"><i class="fas fa-chevron-left mr-2"></i> Kembali</button>
+                <button onclick="navigateFlow(-1)" id="btn-prev" class="text-slate-500 hover:text-indigo-600 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full disabled:opacity-30 flex items-center"><i class="fas fa-chevron-left mr-2"></i> Kembali</button>
                 <div class="w-px h-5 bg-slate-300"></div>
-                <button onclick="navigateFlow(1)" id="btn-next" class="text-slate-700 hover:text-white hover:bg-indigo-600 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full"><i class="fas fa-chevron-right ml-2"></i> Lanjutkan</button>
+                <!-- PERBAIKAN: Posisi panah dipindah ke sebelah kanan teks -->
+                <button onclick="navigateFlow(1)" id="btn-next" class="text-slate-700 hover:text-white hover:bg-indigo-600 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full flex items-center">Lanjutkan <i class="fas fa-chevron-right ml-2"></i></button>
             </div>
         </div>
     </main>
@@ -557,11 +557,35 @@
         }
 
         // ==========================================
-        // STATE & DUMMY DATA (FALLBACK)
+        // STATE & HELPER
         // ==========================================
         window.appState = { isLoggedIn: false, profil: {}, jadwal: [], siswa: [], pesan: [] };
         const flowSequence = ['view-beranda', 'view-tentang', 'view-kesepakatan', 'view-jadwal', 'view-pesan'];
         let activeViewId = null;
+        
+        // Helper: Deteksi Kata Kunci untuk Ikon Kesepakatan Belajar
+        function getIconForAgreement(text) {
+            const t = text.toLowerCase();
+            if (t.includes('waktu') || t.includes('jam') || t.includes('terlambat') || t.includes('hadir')) return 'fa-clock text-blue-500 bg-blue-50';
+            if (t.includes('tanya') || t.includes('diskusi') || t.includes('bicara') || t.includes('aktif')) return 'fa-comments text-emerald-500 bg-emerald-50';
+            if (t.includes('tugas') || t.includes('pr ') || t.includes('kumpul') || t.includes('nilai')) return 'fa-tasks text-purple-500 bg-purple-50';
+            if (t.includes('hormat') || t.includes('sopan') || t.includes('teman') || t.includes('hargai')) return 'fa-hands-helping text-pink-500 bg-pink-50';
+            if (t.includes('hp') || t.includes('gawai') || t.includes('tenang') || t.includes('gadget')) return 'fa-mobile-alt text-red-500 bg-red-50';
+            if (t.includes('izin') || t.includes('sakit') || t.includes('absen')) return 'fa-user-check text-teal-500 bg-teal-50';
+            if (t.includes('rapi') || t.includes('bersih') || t.includes('seragam') || t.includes('sepatu')) return 'fa-tshirt text-indigo-500 bg-indigo-50';
+            return 'fa-star text-amber-500 bg-amber-50'; // default
+        }
+
+        // Helper: Sorting Jadwal Berdasarkan Hari dan Jam
+        const dayOrder = { "Senin":1, "Selasa":2, "Rabu":3, "Kamis":4, "Jumat":5, "Sabtu":6, "Minggu":7 };
+        function getSortedJadwal(jadwalArray) {
+            return [...jadwalArray].sort((a, b) => {
+                const dayA = dayOrder[a.hari] || 99;
+                const dayB = dayOrder[b.hari] || 99;
+                if (dayA !== dayB) return dayA - dayB; // Sort by hari
+                return (a.waktu || "").localeCompare(b.waktu || ""); // Sort by jam
+            });
+        }
 
         const dummyProfil = {
             nama: "Bapak Budi Santoso", mapel: "Guru Matematika", motto: "Belajar bukan untuk ujian, tapi kehidupan.",
@@ -569,7 +593,7 @@
             pendidikan: "• S1 Pend. Matematika\n• S2 Manajemen", hobi: "• Membaca\n• Bersepeda",
             email: "budi@sekolah.id", nohp: "0812-3456-7890", alamat: "Jl. Pendidikan",
             foto_url: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&q=80&w=600",
-            kesepakatan: "Hadir tepat waktu.\nBerani bertanya.\nKumpulkan tugas."
+            kesepakatan: "Hadir tepat waktu di kelas.\nBerani bertanya dan berdiskusi.\nKumpulkan tugas sesuai tenggat.\nSaling menghormati teman.\nDilarang main HP saat guru menjelaskan."
         };
         const dummyJadwal = [{ id: "j1", hari: "Senin", waktu: "07:15 - 08:45", kelas: "X MIPA 1", keterangan: "Ruang Kelas" }];
         let dummySiswa = [{ id: "s1", nama: "Andi Saputra", kelas: "X MIPA 1" }, { id: "s2", nama: "Citra", kelas: "X MIPA 2" }];
@@ -728,18 +752,34 @@
             const imgEl = document.getElementById('pub-foto');
             imgEl.src = p.foto_url || 'https://via.placeholder.com/600';
 
+            // PERBAIKAN: Render Kesepakatan dengan Ikon Otomatis (Keyword Detection)
             const ulKesepakatan = document.getElementById('pub-kesepakatan'); ulKesepakatan.innerHTML = '';
             if (p.kesepakatan) {
-                p.kesepakatan.split('\n').forEach((line, i) => {
-                    if(line.trim()) ulKesepakatan.innerHTML += `<li class="bg-white/80 p-5 rounded-2xl shadow-sm flex items-start"><div class="w-8 h-8 shrink-0 rounded-full bg-indigo-50 flex items-center justify-center mr-4"><span class="font-bold text-indigo-500 text-xs">${i+1}</span></div><span class="text-slate-600 font-bold text-sm">${line}</span></li>`;
+                p.kesepakatan.split('\n').forEach((line) => {
+                    if(line.trim()) {
+                        const iconClass = getIconForAgreement(line); // Panggil fungsi helper ikon
+                        ulKesepakatan.innerHTML += `
+                        <li class="bg-white/80 p-4 md:p-5 rounded-2xl shadow-sm flex items-center border border-white hover:shadow-md transition">
+                            <div class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center mr-4 ${iconClass.split(' ')[2]} border border-slate-100">
+                                <i class="fas ${iconClass.split(' ')[0]} ${iconClass.split(' ')[1]} text-lg"></i>
+                            </div>
+                            <span class="text-slate-600 font-bold text-sm leading-relaxed">${line}</span>
+                        </li>`;
+                    }
                 });
             }
 
+            // PERBAIKAN: Render Jadwal dengan Pengurutan (Sort by Day & Time)
             const tbody = document.getElementById('pub-jadwal-body'); tbody.innerHTML = '';
-            if (appState.jadwal.length === 0) tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400">Jadwal kosong.</td></tr>`;
-            appState.jadwal.forEach(j => {
-                tbody.innerHTML += `<tr><td class="py-4 px-5 font-bold">${j.hari}</td><td class="py-4 px-5">${j.waktu}</td><td class="py-4 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs">${j.kelas}</span></td><td class="py-4 px-5 italic">${j.keterangan}</td></tr>`;
-            });
+            const sortedJadwal = getSortedJadwal(appState.jadwal); // Panggil fungsi sorting
+            
+            if (sortedJadwal.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400">Jadwal kosong.</td></tr>`;
+            } else {
+                sortedJadwal.forEach(j => {
+                    tbody.innerHTML += `<tr><td class="py-4 px-5 font-bold">${j.hari}</td><td class="py-4 px-5">${j.waktu}</td><td class="py-4 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs border border-indigo-100 font-bold">${j.kelas}</span></td><td class="py-4 px-5 italic">${j.keterangan}</td></tr>`;
+                });
+            }
             
             populateKelasDropdown();
         }
@@ -868,9 +908,11 @@
                 const el = document.getElementById('edit-'+ (k==='foto_url'?'foto':k)); if(el) el.value = p[k] || '';
             });
 
+            // PERBAIKAN: Admin Jadwal juga di sort
             const tbJadwal = document.getElementById('admin-jadwal-body'); tbJadwal.innerHTML = '';
-            appState.jadwal.forEach(j => {
-                tbJadwal.innerHTML += `<tr><td class="py-3 px-5 text-xs font-bold">${j.hari}</td><td class="py-3 px-5 text-xs">${j.waktu}</td><td class="py-3 px-5 text-xs">${j.kelas}</td><td class="py-3 px-5 text-xs">${j.keterangan}</td><td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
+            const sortedAdminJadwal = getSortedJadwal(appState.jadwal);
+            sortedAdminJadwal.forEach(j => {
+                tbJadwal.innerHTML += `<tr><td class="py-3 px-5 text-xs font-bold">${j.hari}</td><td class="py-3 px-5 text-xs">${j.waktu}</td><td class="py-3 px-5 text-xs font-bold text-indigo-600">${j.kelas}</td><td class="py-3 px-5 text-xs">${j.keterangan}</td><td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded"><i class="fas fa-trash"></i></button></td></tr>`;
             });
 
             const tbSiswa = document.getElementById('admin-siswa-body'); tbSiswa.innerHTML = '';
@@ -988,91 +1030,73 @@
             });
         }
 
-        // ==========================================
-        // FITUR BARU: RENDER EXCEL BERSAMA GAMBAR VISUAL 
-        // MENGGUNAKAN EXCELJS
-        // ==========================================
-        window.downloadPesanExcel = async function() {
-            // Gunakan data pesan yang sedang tampil di layar (sudah difilter)
-            const pesanList = window.currentFilteredPesan || appState.pesan;
-            
-            if(pesanList.length === 0) return Swal.fire('Kosong', 'Belum ada pesan untuk didownload.', 'info');
+        // PERBAIKAN: Fungsi Download Diubah Menjadi ZIP (Excel + Semua Foto)
+        window.downloadPesanZip = async function() {
+            const dataToExport = window.currentFilteredPesan || appState.pesan;
+            if(dataToExport.length === 0) return Swal.fire('Kosong', 'Belum ada data pesan/foto untuk didownload pada filter ini.', 'info');
             
             Swal.fire({
-                title: 'Mempersiapkan Excel...', 
-                text: 'Menyusun data dan merender foto wajah siswa, mohon tunggu sebentar.', 
+                title: 'Mempersiapkan ZIP...',
+                text: 'Sedang membungkus data Excel dan semua foto siswa. Mohon tunggu sebentar.',
                 allowOutsideClick: false,
-                didOpen: ()=>Swal.showLoading()
+                didOpen: () => Swal.showLoading()
             });
-
+            
             try {
-                // Inisialisasi Workbook baru menggunakan ExcelJS
-                const workbook = new ExcelJS.Workbook();
-                const worksheet = workbook.addWorksheet('Pesan Siswa');
-
-                // Tentukan Kolom dan Lebarnya
-                worksheet.columns = [
-                    { header: 'Waktu', key: 'waktu', width: 22 },
-                    { header: 'Kelas', key: 'kelas', width: 15 },
-                    { header: 'Nama Siswa', key: 'nama', width: 25 },
-                    { header: 'Panggilan', key: 'panggilan', width: 15 },
-                    { header: 'Pesan / Harapan', key: 'pesan', width: 50 },
-                    { header: 'Foto Wajah', key: 'foto', width: 15 } // Kolom untuk menampung gambar
-                ];
-
-                // Styling untuk Baris Header
-                worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
-                worksheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4F46E5' } }; // Warna Indigo
-                worksheet.getRow(1).height = 25;
-
-                // Loop setiap isi pesan untuk dimasukkan ke baris Excel
-                pesanList.forEach((p, index) => {
-                    const rowIndex = index + 2; // Karena index 1 adalah Header
-                    
-                    // Masukkan data teks
-                    worksheet.addRow({
-                        waktu: p.timestamp,
-                        kelas: p.kelas,
-                        nama: p.nama,
-                        panggilan: p.nama_panggilan || "-",
-                        pesan: p.isi
-                    });
-                    
-                    const row = worksheet.getRow(rowIndex);
-                    row.height = 85; // Sesuaikan tinggi baris agar gambar tidak menyempit
-                    row.alignment = { vertical: 'middle', wrapText: true }; 
-
-                    // Sisipkan Gambar Visual ke dalam Sel Jika Ada
-                    if (p.foto && p.foto.includes('base64,')) {
-                        try {
-                            const base64Data = p.foto.split('base64,')[1];
-                            const extension = p.foto.substring(p.foto.indexOf('/') + 1, p.foto.indexOf(';'));
+                const zip = new JSZip();
+                
+                // 1. Buat File Excel
+                const wsData = dataToExport.map(p => ({
+                    "Waktu": p.timestamp,
+                    "Kelas": p.kelas,
+                    "Nama Lengkap": p.nama,
+                    "Nama Panggilan": p.nama_panggilan || "-",
+                    "Pesan / Harapan": p.isi,
+                    "Keterangan Foto": p.foto ? "Ada di dalam folder Foto_Siswa" : "Tidak mengunggah foto"
+                }));
+                const ws = XLSX.utils.json_to_sheet(wsData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Pesan Siswa");
+                
+                // Konversi Excel ke array buffer untuk JSZip
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                zip.file("Rekap_Pesan_Siswa.xlsx", excelBuffer);
+                
+                // 2. Buat Folder Khusus Foto di dalam ZIP
+                const imgFolder = zip.folder("Foto_Siswa");
+                let photoCount = 0;
+                
+                dataToExport.forEach((p, index) => {
+                    if (p.foto && p.foto.startsWith('data:image')) {
+                        // Pisahkan header base64 dari datanya
+                        const base64Data = p.foto.split('base64,')[1];
+                        if(base64Data) {
+                            // Bersihkan nama siswa dari karakter yang tidak diizinkan untuk nama file
+                            let safeName = (p.nama || "TanpaNama").replace(/[^a-zA-Z0-9]/g, '_');
+                            let safeKelas = (p.kelas || "TanpaKelas").replace(/[^a-zA-Z0-9]/g, '');
+                            let fileName = `${safeKelas}_${safeName}_${index}.jpg`;
                             
-                            const imageId = workbook.addImage({
-                                base64: base64Data,
-                                extension: extension === 'jpeg' ? 'jpeg' : 'png',
-                            });
-                            
-                            // Letakkan gambar pada cell di Kolom ke-6 (Index Col: 5)
-                            worksheet.addImage(imageId, {
-                                tl: { col: 5.1, row: rowIndex - 1 + 0.1 }, // Ditambah 0.1 untuk memberi efek padding pinggiran sel
-                                ext: { width: 95, height: 95 }
-                            });
-                        } catch (e) {
-                            console.warn("Gagal merender gambar Excel untuk: " + p.nama, e);
+                            // Masukkan ke folder zip
+                            imgFolder.file(fileName, base64Data, {base64: true});
+                            photoCount++;
                         }
                     }
                 });
-
-                // Generate Buffer dan Trigger Download 
-                const buffer = await workbook.xlsx.writeBuffer();
-                saveAs(new Blob([buffer]), 'Rekap_Pesan_Siswa_Dengan_Foto.xlsx');
                 
-                Swal.close();
-                Swal.fire('Berhasil!', 'File Excel berhasil diunduh beserta tampilan foto di dalamnya.', 'success');
-            } catch (err) {
-                Swal.fire('Gagal Menyimpan', 'Terjadi kesalahan saat membuat file: ' + err.message, 'error');
+                // 3. Generate ZIP dan Triger Download
+                const zipContent = await zip.generateAsync({type: "blob"});
+                
+                // Penamaan file dinamis berdasarkan filter
+                const filterValue = document.getElementById('filter-kelas-pesan').value;
+                const zipName = filterValue ? `Data_Siswa_${filterValue.replace(/[^a-zA-Z0-9]/g, '')}.zip` : `Data_Semua_Siswa.zip`;
+                
+                saveAs(zipContent, zipName);
+                
+                Swal.fire('Berhasil!', `File ZIP berisi Data Excel dan ${photoCount} Foto Siswa berhasil diunduh.`, 'success');
+                
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'Terjadi kesalahan saat membuat file ZIP. Pastikan browser Anda mendukung fitur ini.', 'error');
             }
         }
 
