@@ -26,7 +26,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- PWA Setup -->
     <script>
         const manifestData = {
             "name": "Andhi Menyapa",
@@ -717,25 +716,22 @@
             <div class="w-full md:w-5/12 relative z-10 flex flex-col items-center justify-center">
                 <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-[2rem] overflow-hidden flex flex-col items-center justify-center relative shadow-inner border border-slate-200 aspect-[4/5] w-full max-w-[280px] p-3 mx-auto">
                     <img id="absen-modal-foto" src="" class="w-full h-full object-cover rounded-[1.5rem] shadow-sm bg-white">
-                    <div class="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md p-4 rounded-[1.25rem] shadow-lg border border-white/50 text-center transform hover:-translate-y-1 transition">
-                        <h3 id="absen-modal-nama" class="text-slate-800 font-extrabold text-lg md:text-xl tracking-tight break-words leading-tight">Nama Siswa</h3>
-                        <div class="flex justify-center mt-2">
-                            <span id="absen-modal-kelas" class="bg-teal-50 text-teal-700 text-[10px] font-extrabold px-3 py-1 rounded-full border border-teal-100 flex items-center uppercase tracking-wider"><i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> Kelas</span>
-                        </div>
-                    </div>
+                    <!-- NAMA TELAH DIPINDAHKAN KE KANAN -->
                 </div>
             </div>
             
             <div class="w-full md:w-7/12 flex flex-col justify-center py-2 relative z-10">
-                <div class="mb-6 text-center md:text-left">
-                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-teal-50 text-teal-500 mb-3 shadow-inner border border-teal-100">
-                        <i class="fas fa-clipboard-check text-xl"></i>
+                <!-- NAMA SISWA & KELAS DIPINDAHKAN KESINI (DI ATAS TOMBOL HSIA) -->
+                <div class="mb-6 text-center md:text-left flex flex-col items-center md:items-start">
+                    <div class="flex items-center gap-2 mb-2 mt-2 md:mt-0">
+                        <span id="absen-modal-kelas" class="bg-teal-50 text-teal-700 text-[10px] sm:text-xs font-extrabold px-3 py-1.5 rounded-full border border-teal-100 flex items-center uppercase tracking-wider">
+                            <i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> Kelas
+                        </span>
                     </div>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight">Kehadiran Siswa</h3>
+                    <h3 id="absen-modal-nama" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800 leading-tight mb-2 break-words">Nama Siswa</h3>
                     <p class="text-sm font-medium text-slate-500 mt-1">Silakan pilih status absensi untuk hari ini.</p>
                 </div>
 
-                <!-- Resize buttons smaller for H S I A -->
                 <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-8">
                     <button onclick="pilihStatusIndividu('H')" id="btn-status-H" class="group py-4 rounded-[1.25rem] border border-slate-200 bg-white hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-md text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden">
                         <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-emerald-100 flex items-center justify-center transition-colors relative z-10">
@@ -790,7 +786,6 @@
                 <i class="fas fa-times text-xl"></i>
             </button>
             
-            <!-- Bagian Kiri: Foto Profil -->
             <div class="w-full md:w-2/5 relative bg-slate-100 min-h-[250px] md:min-h-[400px]">
                 <img id="pesan-modal-foto" src="" alt="Foto Siswa" class="w-full h-full object-cover absolute inset-0 bg-white">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent flex flex-col justify-end p-6 md:p-8">
@@ -802,7 +797,6 @@
                 </div>
             </div>
             
-            <!-- Bagian Kanan: Detail Pesan -->
             <div class="w-full md:w-3/5 flex flex-col bg-white">
                 <div class="p-6 md:p-8 flex-grow overflow-y-auto">
                     <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
@@ -850,7 +844,7 @@
         // ==========================================
         // 1. KONFIGURASI FIREBASE & APLIKASI
         // ==========================================
-        const IS_PREVIEW = true; // SET TO TRUE FOR PREVIEW/DUMMY MODE, FALSE FOR FIREBASE
+        const IS_PREVIEW = false; // SET TO TRUE FOR PREVIEW/DUMMY MODE, FALSE FOR FIREBASE
 
         const firebaseConfig = {
             apiKey: "AIzaSyAANuE51e_ybs5SES6IbV7clOnfhdV3zno", // Replace with real ones if IS_PREVIEW=false
@@ -943,7 +937,7 @@
             { id: "s2", nama: "Citra Lestari", kelas: "X MIPA 1" },
             { id: "s3", nama: "Budi Setiawan", kelas: "X MIPA 2" }
         ];
-        let dummyPesan = [{ id: "p1", timestamp: new Date().toLocaleString('id-ID'), foto: "", nama: "Andi Saputra", nama_panggilan: "Andi", kelas: "X MIPA 1", isi: "Saya ingin terus praktik di Ruang TIK pak agar makin mahir." }];
+        let dummyPesan = [{ id: "p1", timestamp: new Date().toISOString(), foto: "", nama: "Andi Saputra", nama_panggilan: "Andi", kelas: "X MIPA 1", isi: "Saya ingin terus praktik di Ruang TIK pak agar makin mahir." }];
         let dummyMateriTugas = {
             materi: "https://drive.google.com/file/d/demo-materi-matematika\nPelajari bab matriks bab 2 halaman 45.",
             tugas: "https://forms.gle/demo-tugas-matematika\nKerjakan latihan 1 sampai 10 di buku latihan."
@@ -1126,14 +1120,12 @@
                 return;
             }
             try {
-                const pSnap = await db.collection("pesan").orderBy("timestamp", "desc").get();
+                // OPTIMIZATION: Hanya ambil 50 pesan terakhir agar load sangat cepat!
+                const pSnap = await db.collection("pesan").orderBy("timestamp", "desc").limit(50).get();
                 appState.pesan = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
                 
-                // For simplicity, fetch all absensi (in prod, query by date range)
-                const aSnap = await db.collection("absensi").get();
-                let absObj = {};
-                aSnap.docs.forEach(d => { absObj[d.id] = d.data(); });
-                appState.absensi = absObj;
+                // OPTIMIZATION: Data absensi TIDAK LAGI diunduh semua di sini. 
+                // Diunduh on-demand (lazy) di dalam renderAdminAbsensi().
                 
                 renderAdminDashboard();
                 renderAdminProfil();
@@ -1224,138 +1216,144 @@
             const selectAbsen = document.getElementById('absensi-filter-kelas');
             const selectPesanFilter = document.getElementById('filter-kelas-pesan');
             
-            const currentPesanVal = selectPesan.value; 
+            const currentPesanVal = selectPesan ? selectPesan.value : ""; 
             const currentAbsenVal = selectAbsen ? selectAbsen.value : "";
             const currentFilterVal = selectPesanFilter ? selectPesanFilter.value : "";
 
             let htmlKelas = '<option value="">-- Pilih Kelas --</option>';
             const classes = [...new Set(appState.siswa.map(s => s.kelas))].sort();
-            
-            classes.forEach(k => {
-                htmlKelas += `<option value="${k}">${k}</option>`;
+            classes.forEach(c => {
+                htmlKelas += `<option value="${c}">${c}</option>`;
             });
-
-            selectPesan.innerHTML = htmlKelas;
-            if(selectAbsen) selectAbsen.innerHTML = htmlKelas;
-            if(selectPesanFilter) selectPesanFilter.innerHTML = '<option value="">Semua Kelas</option>' + htmlKelas.replace('<option value="">-- Pilih Kelas --</option>', '');
             
-            if(currentPesanVal && appState.siswa.some(s => s.kelas === currentPesanVal)) {
-                selectPesan.value = currentPesanVal;
-                filterSiswaByKelas();
-            }
-
-            if(currentAbsenVal && appState.siswa.some(s => s.kelas === currentAbsenVal) && selectAbsen) {
-                selectAbsen.value = currentAbsenVal;
-                renderAdminAbsensi();
-            }
+            if (selectPesan) { selectPesan.innerHTML = htmlKelas; selectPesan.value = currentPesanVal; }
+            if (selectAbsen) { selectAbsen.innerHTML = htmlKelas; selectAbsen.value = currentAbsenVal; }
+            if (selectPesanFilter) { selectPesanFilter.innerHTML = '<option value="">Semua Kelas</option>' + classes.map(c => `<option value="${c}">${c}</option>`).join(''); selectPesanFilter.value = currentFilterVal; }
         }
 
-        window.filterSiswaByKelas = function() {
-            const kelas = document.getElementById('pesan-kelas').value;
-            const selectNama = document.getElementById('pesan-nama');
-            selectNama.innerHTML = '<option value="">-- Pilih Nama --</option>';
-            if(kelas) {
-                const sFiltered = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
-                sFiltered.forEach(s => {
-                    selectNama.innerHTML += `<option value="${s.nama}">${s.nama}</option>`;
-                });
-            }
+        function filterSiswaByKelas() {
+            const k = document.getElementById('pesan-kelas').value;
+            const sn = document.getElementById('pesan-nama');
+            sn.innerHTML = '<option value="">-- Pilih Nama --</option>';
+            if(!k) return;
+            const sList = appState.siswa.filter(s => s.kelas === k).sort((a,b) => a.nama.localeCompare(b.nama));
+            sList.forEach(s => {
+                sn.innerHTML += `<option value="${s.nama}">${s.nama}</option>`;
+            });
         }
 
-        window.handleKirimPesan = async function(e) {
+        async function handleKirimPesan(e) {
             e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true; btn.innerHTML = 'Mengirim... <i class="fas fa-spinner fa-spin ml-2"></i>';
+            
             const kelas = document.getElementById('pesan-kelas').value;
             const nama = document.getElementById('pesan-nama').value;
-            const panggilan = document.getElementById('pesan-panggilan').value;
+            const panggil = document.getElementById('pesan-panggilan').value;
             const isi = document.getElementById('pesan-isi').value;
-            const fileInput = document.getElementById('pesan-foto');
-            const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
-
-            if (!kelas || !nama || !panggilan || !isi) {
-                Swal.fire('Error', 'Harap lengkapi semua data wajib.', 'error');
-                return;
+            const fotoFile = document.getElementById('pesan-foto').files[0];
+            
+            let fotoBase64 = "";
+            if (fotoFile) {
+                fotoBase64 = await new Promise((res) => {
+                    const r = new FileReader(); r.onload = (ev) => res(ev.target.result); r.readAsDataURL(fotoFile);
+                });
             }
 
-            Swal.fire({ title: 'Mengirim Pesan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            const data = {
+                kelas, nama, nama_panggilan: panggil, isi, foto: fotoBase64, timestamp: new Date().toISOString()
+            };
 
             if (IS_PREVIEW) {
-                const fotoUrl = file ? URL.createObjectURL(file) : ""; // If no file, keep it empty string
-                dummyPesan.push({ 
-                    id: Date.now().toString(), 
-                    timestamp: new Date().toLocaleString('id-ID'), 
-                    foto: fotoUrl, 
-                    nama, 
-                    nama_panggilan: panggilan, 
-                    kelas, 
-                    isi 
-                });
-                appState.pesan = dummyPesan;
-                setTimeout(() => {
-                    Swal.fire('Berhasil!', 'Pesan Anda telah terkirim.', 'success');
-                    e.target.reset();
-                    if(appState.isLoggedIn) renderAdminPesan();
-                }, 1000);
+                appState.pesan.unshift(data);
+                Swal.fire('Terkirim!', 'Pesan sapaan berhasil dikirim (Mode Preview).', 'success');
             } else {
                 try {
-                    let fotoUrl = "";
-                    if(file) {
-                        const ref = storage.ref(`foto_pesan/${Date.now()}_${file.name}`);
-                        await ref.put(file);
-                        fotoUrl = await ref.getDownloadURL();
-                    }
-                    await db.collection('pesan').add({
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                        foto: fotoUrl,
-                        nama,
-                        nama_panggilan: panggilan,
-                        kelas,
-                        isi
-                    });
-                    Swal.fire('Berhasil!', 'Pesan Anda telah terkirim.', 'success');
-                    e.target.reset();
-                } catch(error) {
-                    Swal.fire('Gagal', error.message, 'error');
+                    await db.collection("pesan").add(data);
+                    Swal.fire('Terkirim!', 'Pesan sapaan berhasil dikirim.', 'success');
+                } catch(err) {
+                    Swal.fire('Gagal!', 'Terjadi kesalahan saat mengirim.', 'error');
                 }
             }
+            e.target.reset();
+            btn.disabled = false; btn.innerHTML = 'Kirim Pesan Sekarang <i class="fas fa-paper-plane ml-3"></i>';
         }
 
-        window.handleLoginAdmin = async function(e) {
+        async function handleLoginAdmin(e) {
             e.preventDefault();
             const pwd = document.getElementById('login-password').value;
             
-            if(IS_PREVIEW) {
+            if (IS_PREVIEW) {
                 appState.isLoggedIn = true;
                 updateNavState();
                 fetchAdminData();
-                Swal.fire('Sukses', 'Login berhasil (Mode Preview)', 'success');
                 showView('view-admin-dashboard');
-                e.target.reset();
+                Swal.fire('Berhasil', 'Login Admin Preview Aktif', 'success');
                 return;
             }
 
             try {
-                Swal.fire({ title: 'Mengecek...', didOpen: () => { Swal.showLoading(); } });
-                await auth.signInWithEmailAndPassword('admin@sekolah.id', pwd); // Dummy email setup required in Firebase Auth
-                Swal.fire('Sukses', 'Login berhasil', 'success');
-                showView('view-admin-dashboard');
-                e.target.reset();
-            } catch(error) {
-                Swal.fire('Gagal Login', 'Password salah atau terjadi kesalahan.', 'error');
+                const email = appState.profil.email || "admin@sekolah.id"; // Fallback
+                await auth.signInWithEmailAndPassword(email, pwd);
+                Swal.fire('Berhasil', 'Login sukses', 'success');
+            } catch(err) {
+                Swal.fire('Akses Ditolak', 'Password salah atau tidak ada koneksi.', 'error');
             }
         }
 
-        window.logoutAdmin = function() {
+        function logoutAdmin() {
             if(IS_PREVIEW) {
                 appState.isLoggedIn = false;
                 updateNavState();
                 showView('view-beranda');
-                Swal.fire('Logout', 'Anda telah keluar.', 'info');
                 return;
             }
             auth.signOut().then(() => {
+                appState.isLoggedIn = false;
+                updateNavState();
                 showView('view-beranda');
-                Swal.fire('Logout', 'Anda telah keluar.', 'info');
             });
+        }
+
+        async function handleUpdateProfil(e) {
+            e.preventDefault();
+            const keys = ['nama', 'mapel', 'motto', 'deskripsi', 'pendidikan', 'hobi', 'email', 'nohp', 'alamat', 'foto_url', 'kesepakatan'];
+            const data = {};
+            keys.forEach(k => {
+                const id = k === 'foto_url' ? 'foto' : k;
+                data[k] = document.getElementById(`edit-${id}`).value;
+            });
+            
+            if(IS_PREVIEW) {
+                appState.profil = data;
+                renderPublicUI();
+                Swal.fire('Disimpan', 'Profil berhasil diupdate (Preview).', 'success');
+                return;
+            }
+
+            try {
+                await db.collection("pengaturan").doc("profil_guru").set(data);
+                appState.profil = data;
+                renderPublicUI();
+                Swal.fire('Disimpan', 'Profil berhasil diupdate.', 'success');
+            } catch(err) {
+                Swal.fire('Gagal', err.message, 'error');
+            }
+        }
+
+        async function handleUbahPassword(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('pwd-baru').value;
+            const p2 = document.getElementById('pwd-konfirm').value;
+            if(p1 !== p2) return Swal.fire('Error', 'Password tidak cocok', 'error');
+            if(IS_PREVIEW) return Swal.fire('Preview', 'Fitur ubah password dinonaktifkan di mode preview', 'info');
+            try {
+                await auth.currentUser.updatePassword(p1);
+                Swal.fire('Berhasil', 'Password terupdate', 'success');
+                e.target.reset();
+            } catch(err) {
+                Swal.fire('Gagal', err.message, 'error');
+            }
         }
 
         function renderAdminDashboard() {
@@ -1366,64 +1364,15 @@
 
         function renderAdminProfil() {
             const p = appState.profil;
-            document.getElementById('edit-nama').value = p.nama || '';
-            document.getElementById('edit-mapel').value = p.mapel || '';
-            document.getElementById('edit-motto').value = p.motto || '';
-            document.getElementById('edit-deskripsi').value = p.deskripsi || '';
-            document.getElementById('edit-pendidikan').value = p.pendidikan || '';
-            document.getElementById('edit-hobi').value = p.hobi || '';
-            document.getElementById('edit-foto').value = p.foto_url || '';
-            document.getElementById('edit-email').value = p.email || '';
-            document.getElementById('edit-nohp').value = p.nohp || '';
-            document.getElementById('edit-alamat').value = p.alamat || '';
-            document.getElementById('edit-kesepakatan').value = p.kesepakatan || '';
-        }
-
-        window.handleUpdateProfil = async function(e) {
-            e.preventDefault();
-            const data = {
-                nama: document.getElementById('edit-nama').value,
-                mapel: document.getElementById('edit-mapel').value,
-                motto: document.getElementById('edit-motto').value,
-                deskripsi: document.getElementById('edit-deskripsi').value,
-                pendidikan: document.getElementById('edit-pendidikan').value,
-                hobi: document.getElementById('edit-hobi').value,
-                foto_url: document.getElementById('edit-foto').value,
-                email: document.getElementById('edit-email').value,
-                nohp: document.getElementById('edit-nohp').value,
-                alamat: document.getElementById('edit-alamat').value,
-                kesepakatan: document.getElementById('edit-kesepakatan').value
-            };
-
-            if(IS_PREVIEW) {
-                appState.profil = data;
-                renderPublicUI();
-                Swal.fire('Sukses', 'Profil diperbarui!', 'success');
-            } else {
-                try {
-                    await db.collection("pengaturan").doc("profil_guru").set(data);
-                    appState.profil = data;
-                    renderPublicUI();
-                    Swal.fire('Sukses', 'Profil diperbarui!', 'success');
-                } catch(err) { Swal.fire('Error', err.message, 'error'); }
-            }
-        }
-
-        function renderAdminJadwal() {
-            const tbody = document.getElementById('admin-jadwal-body');
-            tbody.innerHTML = '';
-            const sortedJadwal = getSortedJadwal(appState.jadwal);
-            sortedJadwal.forEach((j, index) => {
-                tbody.innerHTML += `<tr>
-                    <td class="py-3 px-5">${j.hari}</td><td class="py-3 px-5">${j.waktu}</td>
-                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs font-bold border border-indigo-100">${j.kelas}</span></td>
-                    <td class="py-3 px-5">${j.keterangan || '-'}</td>
-                    <td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded-lg"><i class="fas fa-trash"></i></button></td>
-                </tr>`;
+            if(!p.nama) return;
+            const keys = ['nama', 'mapel', 'motto', 'deskripsi', 'pendidikan', 'hobi', 'email', 'nohp', 'alamat', 'foto', 'kesepakatan'];
+            keys.forEach(k => {
+                const el = document.getElementById(`edit-${k}`);
+                if(el) el.value = p[k === 'foto' ? 'foto_url' : k] || '';
             });
         }
 
-        window.handleTambahJadwal = async function(e) {
+        async function handleTambahJadwal(e) {
             e.preventDefault();
             const data = {
                 hari: document.getElementById('jadwal-hari').value,
@@ -1432,80 +1381,84 @@
                 keterangan: document.getElementById('jadwal-ket').value
             };
             if(IS_PREVIEW) {
-                data.id = "j" + Date.now();
+                data.id = "j"+Date.now();
                 appState.jadwal.push(data);
-                renderAdminJadwal(); renderPublicUI(); e.target.reset(); renderAdminDashboard();
-            } else {
-                try {
-                    const res = await db.collection("jadwal").add(data);
-                    data.id = res.id;
-                    appState.jadwal.push(data);
-                    renderAdminJadwal(); renderPublicUI(); e.target.reset(); renderAdminDashboard();
-                } catch(err) { Swal.fire('Error', err.message, 'error'); }
+                renderAdminJadwal(); renderPublicUI();
+                e.target.reset(); return;
             }
+            try {
+                const doc = await db.collection("jadwal").add(data);
+                data.id = doc.id;
+                appState.jadwal.push(data);
+                renderAdminJadwal(); renderPublicUI();
+                e.target.reset();
+            } catch(err) { Swal.fire('Gagal', err.message, 'error'); }
         }
 
         window.hapusJadwal = async function(id) {
-            if(confirm("Hapus jadwal ini?")) {
-                if(IS_PREVIEW) {
-                    appState.jadwal = appState.jadwal.filter(j => j.id !== id);
-                    renderAdminJadwal(); renderPublicUI(); renderAdminDashboard();
-                } else {
-                    await db.collection("jadwal").doc(id).delete();
-                    appState.jadwal = appState.jadwal.filter(j => j.id !== id);
-                    renderAdminJadwal(); renderPublicUI(); renderAdminDashboard();
-                }
+            if(!confirm('Hapus jadwal ini?')) return;
+            if(IS_PREVIEW) {
+                appState.jadwal = appState.jadwal.filter(j => j.id !== id);
+                renderAdminJadwal(); renderPublicUI(); return;
             }
+            try {
+                await db.collection("jadwal").doc(id).delete();
+                appState.jadwal = appState.jadwal.filter(j => j.id !== id);
+                renderAdminJadwal(); renderPublicUI();
+            } catch(err) {}
         }
 
-        function renderAdminSiswa() {
-            const tbody = document.getElementById('admin-siswa-body');
-            tbody.innerHTML = '';
-            appState.siswa.sort((a,b) => {
-                if(a.kelas !== b.kelas) return a.kelas.localeCompare(b.kelas);
-                return a.nama.localeCompare(b.nama);
-            }).forEach((s) => {
-                tbody.innerHTML += `<tr>
-                    <td class="py-3 px-6 font-bold text-slate-700">${s.nama}</td>
-                    <td class="py-3 px-6"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs font-bold border border-indigo-100">${s.kelas}</span></td>
-                    <td class="py-3 px-6 text-center"><button onclick="hapusSiswa('${s.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded-lg"><i class="fas fa-trash"></i></button></td>
-                </tr>`;
+        function renderAdminJadwal() {
+            const tbody = document.getElementById('admin-jadwal-body'); tbody.innerHTML = '';
+            getSortedJadwal(appState.jadwal).forEach(j => {
+                tbody.innerHTML += `<tr><td class="py-3 px-5">${j.hari}</td><td class="py-3 px-5">${j.waktu}</td><td class="py-3 px-5">${j.kelas}</td><td class="py-3 px-5">${j.keterangan||'-'}</td><td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg cursor-pointer"><i class="fas fa-trash"></i></button></td></tr>`;
             });
-            populateKelasDropdown();
         }
 
-        window.handleTambahSiswa = async function(e) {
+        async function handleTambahSiswa(e) {
             e.preventDefault();
             const data = { nama: document.getElementById('siswa-nama').value, kelas: document.getElementById('siswa-kelas').value };
             if(IS_PREVIEW) {
-                data.id = "s" + Date.now(); appState.siswa.push(data);
-                renderAdminSiswa(); e.target.reset(); renderAdminDashboard();
-            } else {
-                try {
-                    const res = await db.collection("siswa").add(data);
-                    data.id = res.id; appState.siswa.push(data);
-                    renderAdminSiswa(); e.target.reset(); renderAdminDashboard();
-                } catch(err) { Swal.fire('Error', err.message, 'error'); }
+                data.id = "s"+Date.now(); appState.siswa.push(data);
+                renderAdminSiswa(); populateKelasDropdown();
+                e.target.reset(); Swal.fire('Sukses', 'Siswa ditambahkan', 'success'); return;
             }
+            try {
+                const doc = await db.collection("siswa").add(data);
+                data.id = doc.id; appState.siswa.push(data);
+                renderAdminSiswa(); populateKelasDropdown();
+                e.target.reset(); Swal.fire('Sukses', 'Siswa ditambahkan', 'success');
+            } catch(err) {}
         }
 
         window.hapusSiswa = async function(id) {
-            if(confirm("Hapus siswa ini?")) {
-                if(IS_PREVIEW) {
-                    appState.siswa = appState.siswa.filter(s => s.id !== id);
-                    renderAdminSiswa(); renderAdminDashboard();
-                } else {
-                    await db.collection("siswa").doc(id).delete();
-                    appState.siswa = appState.siswa.filter(s => s.id !== id);
-                    renderAdminSiswa(); renderAdminDashboard();
-                }
+            if(!confirm('Hapus siswa ini?')) return;
+            if(IS_PREVIEW) {
+                appState.siswa = appState.siswa.filter(s => s.id !== id);
+                renderAdminSiswa(); populateKelasDropdown(); return;
             }
+            try {
+                await db.collection("siswa").doc(id).delete();
+                appState.siswa = appState.siswa.filter(s => s.id !== id);
+                renderAdminSiswa(); populateKelasDropdown();
+            } catch(err) {}
+        }
+
+        function renderAdminSiswa() {
+            const tbody = document.getElementById('admin-siswa-body'); tbody.innerHTML = '';
+            const sorted = [...appState.siswa].sort((a,b) => {
+                if(a.kelas === b.kelas) return a.nama.localeCompare(b.nama);
+                return a.kelas.localeCompare(b.kelas);
+            });
+            sorted.forEach(s => {
+                tbody.innerHTML += `<tr><td class="py-3 px-6 font-bold">${s.nama}</td><td class="py-3 px-6"><span class="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-xs border font-bold">${s.kelas}</span></td><td class="py-3 px-6 text-center"><button onclick="hapusSiswa('${s.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg cursor-pointer"><i class="fas fa-trash"></i></button></td></tr>`;
+            });
         }
 
         window.downloadTemplateExcel = function() {
-            const ws = XLSX.utils.json_to_sheet([{ "Nama Lengkap": "Budi Santoso", "Kelas": "X MIPA 1" }]);
+            const ws = XLSX.utils.json_to_sheet([{ Nama: "Contoh Budi", Kelas: "X MIPA 1" }]);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Siswa");
+            XLSX.utils.book_append_sheet(wb, ws, "DataSiswa");
             XLSX.writeFile(wb, "Template_Siswa.xlsx");
         }
 
@@ -1522,32 +1475,377 @@
                 
                 let count = 0;
                 for(let row of json) {
-                    const nama = row['Nama Lengkap'] || row['nama'];
-                    const kelas = row['Kelas'] || row['kelas'];
-                    if(nama && kelas) {
-                        const newData = {nama: String(nama).trim(), kelas: String(kelas).trim()};
+                    if(row.Nama && row.Kelas) {
+                        const sData = { nama: row.Nama, kelas: row.Kelas };
                         if(IS_PREVIEW) {
-                            newData.id = "s" + Date.now() + Math.random();
-                            appState.siswa.push(newData);
+                            sData.id = "s"+Date.now()+Math.random();
+                            appState.siswa.push(sData);
                         } else {
-                            const res = await db.collection("siswa").add(newData);
-                            newData.id = res.id;
-                            appState.siswa.push(newData);
+                            try {
+                                const doc = await db.collection("siswa").add(sData);
+                                sData.id = doc.id;
+                                appState.siswa.push(sData);
+                            } catch(err){}
                         }
                         count++;
                     }
                 }
-                Swal.fire('Sukses', `${count} data siswa diimpor.`, 'success');
-                renderAdminSiswa(); renderAdminDashboard();
+                renderAdminSiswa(); populateKelasDropdown();
+                Swal.fire('Sukses', `${count} Siswa diimport.`, 'success');
                 document.getElementById('form-import-siswa').reset();
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function renderAdminMateri() {
-            const mt = appState.materiTugas || {};
-            document.getElementById('materi-link-input').value = mt.materi || '';
-            document.getElementById('tugas-link-input').value = mt.tugas || '';
+        window.renderAdminAbsensi = async function() {
+            const ta = document.getElementById('absensi-filter-ta').value.replace('/', '-');
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+
+            if(!kelas || !tanggal) {
+                document.getElementById('container-absen-sekaligus').classList.add('hidden');
+                document.getElementById('absensi-action-buttons').classList.add('hidden');
+                return;
+            }
+
+            const docId = `${ta}_${kelas}_${tanggal}`;
+            
+            // LAZY LOADING: Fetch dynamically from Firebase only when date & class selected
+            if (!IS_PREVIEW) {
+                Swal.fire({title: 'Memuat Data Absensi...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+                try {
+                    const docSnap = await db.collection("absensi").doc(docId).get();
+                    appState.absensi[docId] = docSnap.exists ? docSnap.data() : {};
+                    Swal.close();
+                } catch (e) {
+                    Swal.close();
+                    console.error("Gagal load absensi", e);
+                }
+            }
+
+            window.currentAbsenRecords = appState.absensi[docId] || {};
+            window.filteredSiswaAbsenList = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+            
+            if(window.filteredSiswaAbsenList.length === 0) {
+                document.getElementById('container-absen-sekaligus').classList.add('hidden');
+                document.getElementById('absensi-action-buttons').classList.add('hidden');
+                return Swal.fire('Kosong', `Tidak ada siswa di kelas ${kelas}`, 'info');
+            }
+
+            document.getElementById('absensi-action-buttons').classList.remove('hidden');
+            
+            // Default to 'sekaligus' mode if container is hidden
+            if(document.getElementById('container-absen-sekaligus').classList.contains('hidden')) {
+                setModeAbsensi('sekaligus');
+            } else {
+                renderAbsenSekaligus();
+            }
+        }
+
+        window.setModeAbsensi = function(mode) {
+            const btnSatu = document.getElementById('btn-mode-satu');
+            const btnSekaligus = document.getElementById('btn-mode-sekaligus');
+            const containerSekaligus = document.getElementById('container-absen-sekaligus');
+
+            if(mode === 'sekaligus') {
+                btnSekaligus.className = "px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-teal-600 text-white shadow-md cursor-pointer";
+                btnSatu.className = "px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-transparent text-slate-500 hover:bg-slate-200 cursor-pointer";
+                containerSekaligus.classList.remove('hidden');
+                renderAbsenSekaligus();
+            } else {
+                btnSatu.className = "px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-teal-600 text-white shadow-md cursor-pointer";
+                btnSekaligus.className = "px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-transparent text-slate-500 hover:bg-slate-200 cursor-pointer";
+                containerSekaligus.classList.add('hidden');
+                mulaiAbsenIndividu();
+            }
+        }
+
+        function renderAbsenSekaligus() {
+            const tbody = document.getElementById('admin-absensi-body');
+            tbody.innerHTML = '';
+            window.filteredSiswaAbsenList.forEach((s, idx) => {
+                const status = window.currentAbsenRecords[s.nama] || '';
+                const foto = getSiswaPhoto(s.nama);
+                tbody.innerHTML += `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="py-3 px-5 text-center"><img src="${foto}" class="w-10 h-10 rounded-full object-cover mx-auto shadow-sm"></td>
+                    <td class="py-3 px-5 font-bold text-slate-700">${s.nama}</td>
+                    <td class="py-3 px-5">
+                        <div class="flex justify-center gap-1 sm:gap-2">
+                            <button onclick="updateStatusSekaligus('${s.nama}', 'H')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full font-extrabold text-xs sm:text-sm transition-all border ${status==='H'?'bg-emerald-500 text-white border-emerald-600 shadow-md':'bg-white text-slate-500 border-slate-200 hover:bg-slate-100'}">H</button>
+                            <button onclick="updateStatusSekaligus('${s.nama}', 'S')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full font-extrabold text-xs sm:text-sm transition-all border ${status==='S'?'bg-amber-500 text-white border-amber-600 shadow-md':'bg-white text-slate-500 border-slate-200 hover:bg-slate-100'}">S</button>
+                            <button onclick="updateStatusSekaligus('${s.nama}', 'I')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full font-extrabold text-xs sm:text-sm transition-all border ${status==='I'?'bg-blue-500 text-white border-blue-600 shadow-md':'bg-white text-slate-500 border-slate-200 hover:bg-slate-100'}">I</button>
+                            <button onclick="updateStatusSekaligus('${s.nama}', 'A')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full font-extrabold text-xs sm:text-sm transition-all border ${status==='A'?'bg-red-500 text-white border-red-600 shadow-md':'bg-white text-slate-500 border-slate-200 hover:bg-slate-100'}">A</button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        window.updateStatusSekaligus = function(nama, status) {
+            window.currentAbsenRecords[nama] = status;
+            renderAbsenSekaligus();
+        }
+
+        window.simpanSemuaAbsensi = async function() {
+            const ta = document.getElementById('absensi-filter-ta').value.replace('/', '-');
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            const docId = `${ta}_${kelas}_${tanggal}`;
+            
+            appState.absensi[docId] = window.currentAbsenRecords;
+            
+            if(IS_PREVIEW) {
+                Swal.fire('Tersimpan', 'Data absensi tersimpan (Preview)', 'success');
+                return;
+            }
+            try {
+                await db.collection("absensi").doc(docId).set(window.currentAbsenRecords);
+                Swal.fire('Tersimpan', 'Data absensi berhasil disimpan ke Firebase', 'success');
+            } catch(err) {
+                Swal.fire('Error', err.message, 'error');
+            }
+        }
+
+        function mulaiAbsenIndividu() {
+            if(window.filteredSiswaAbsenList.length === 0) return;
+            window.currentAbsenIndex = 0;
+            document.getElementById('absen-modal-total').innerText = window.filteredSiswaAbsenList.length;
+            renderAbsenIndividuModal();
+            const modal = document.getElementById('modal-absen-individu');
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('flex');
+            modal.classList.remove('hidden');
+        }
+
+        window.tutupModalAbsen = function() {
+            const modal = document.getElementById('modal-absen-individu');
+            modal.classList.add('modal-hidden');
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+            setModeAbsensi('sekaligus');
+        }
+
+        function renderAbsenIndividuModal() {
+            const s = window.filteredSiswaAbsenList[window.currentAbsenIndex];
+            
+            document.getElementById('absen-modal-nama').innerText = s.nama;
+            document.getElementById('absen-modal-kelas').innerHTML = `<i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> ${s.kelas}`;
+            document.getElementById('absen-modal-foto').src = getSiswaPhoto(s.nama);
+            
+            document.getElementById('absen-modal-counter').innerText = window.currentAbsenIndex + 1;
+            
+            const currentStatus = window.currentAbsenRecords[s.nama] || '';
+            ['H','S','I','A'].forEach(st => {
+                const btn = document.getElementById(`btn-status-${st}`);
+                if(currentStatus === st) {
+                    btn.classList.add('ring-4', 'ring-teal-400', 'bg-teal-50', 'scale-105');
+                    btn.classList.remove('border-slate-200');
+                } else {
+                    btn.classList.remove('ring-4', 'ring-teal-400', 'bg-teal-50', 'scale-105');
+                    btn.classList.add('border-slate-200');
+                }
+            });
+            
+            document.getElementById('btn-modal-prev').disabled = (window.currentAbsenIndex === 0);
+            document.getElementById('btn-modal-next').disabled = (window.currentAbsenIndex === window.filteredSiswaAbsenList.length - 1);
+        }
+
+        window.pilihStatusIndividu = function(status) {
+            const s = window.filteredSiswaAbsenList[window.currentAbsenIndex];
+            window.currentAbsenRecords[s.nama] = status;
+            renderAbsenIndividuModal();
+            
+            // Auto next
+            setTimeout(() => {
+                if(window.currentAbsenIndex < window.filteredSiswaAbsenList.length - 1) {
+                    navModalAbsen(1);
+                } else {
+                    simpanSemuaAbsensi();
+                    Swal.fire({
+                        title: 'Selesai!', text: 'Absensi kelas ini sudah mencapai akhir.', icon: 'success',
+                        confirmButtonText: 'Tutup'
+                    }).then(() => tutupModalAbsen());
+                }
+            }, 300);
+        }
+
+        window.navModalAbsen = function(step) {
+            window.currentAbsenIndex += step;
+            if(window.currentAbsenIndex < 0) window.currentAbsenIndex = 0;
+            if(window.currentAbsenIndex >= window.filteredSiswaAbsenList.length) window.currentAbsenIndex = window.filteredSiswaAbsenList.length - 1;
+            renderAbsenIndividuModal();
+        }
+
+        window.exportAbsensiExcel = async function() {
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            if(!kelas) return Swal.fire('Pilih Kelas', 'Silakan pilih kelas terlebih dahulu untuk diekspor.', 'warning');
+            
+            Swal.fire({title: 'Menyiapkan Ekspor...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+            
+            let allAbsences = appState.absensi; 
+            
+            // Jika bukan preview, load SEMUA data absensi hanya ketika tombol Export ditekan
+            if(!IS_PREVIEW) {
+                try {
+                    const snap = await db.collection("absensi").get();
+                    allAbsences = {};
+                    snap.docs.forEach(d => { allAbsences[d.id] = d.data(); });
+                } catch(e) {
+                    Swal.fire('Error', 'Gagal memuat semua data absensi', 'error');
+                    return;
+                }
+            }
+            
+            // Cari semua tanggal yang ada untuk kelas ini
+            const datesSet = new Set();
+            for(let key in allAbsences) {
+                if(key.includes(`_${kelas}_`)) {
+                    const parts = key.split('_');
+                    if(parts.length >= 3) datesSet.add(parts[2]); // part[2] is tanggal
+                }
+            }
+            const dates = Array.from(datesSet).sort();
+            
+            if(dates.length === 0) {
+                return Swal.fire('Kosong', `Belum ada data absensi untuk kelas ${kelas}`, 'info');
+            }
+
+            const siswaKelas = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+            
+            const exportData = [];
+            siswaKelas.forEach(s => {
+                const row = { "Nama Siswa": s.nama, "Kelas": s.kelas };
+                let h=0, sk=0, i=0, a=0;
+                dates.forEach(d => {
+                    let foundKey = Object.keys(allAbsences).find(k => k.includes(`_${kelas}_${d}`));
+                    let stat = foundKey && allAbsences[foundKey][s.nama] ? allAbsences[foundKey][s.nama] : '-';
+                    row[d] = stat;
+                    if(stat==='H') h++; if(stat==='S') sk++; if(stat==='I') i++; if(stat==='A') a++;
+                });
+                row['Total H'] = h; row['Total S'] = sk; row['Total I'] = i; row['Total A'] = a;
+                exportData.push(row);
+            });
+            
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Rekap_Absensi");
+            XLSX.writeFile(wb, `Rekap_Absensi_${kelas}.xlsx`);
+            Swal.close();
+        }
+
+        window.renderAdminPesan = function() {
+            const filterK = document.getElementById('filter-kelas-pesan').value;
+            const tbody = document.getElementById('admin-pesan-body');
+            tbody.innerHTML = '';
+            
+            window.filteredPesanList = appState.pesan;
+            if(filterK) {
+                window.filteredPesanList = appState.pesan.filter(p => p.kelas === filterK);
+            }
+            
+            if(window.filteredPesanList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-400">Tidak ada pesan.</td></tr>';
+                return;
+            }
+            
+            window.filteredPesanList.forEach((p, idx) => {
+                const dateStr = p.timestamp.includes('T') ? new Date(p.timestamp).toLocaleString('id-ID') : p.timestamp;
+                const foto = p.foto || getFunnyAvatar(p.nama);
+                tbody.innerHTML += `
+                <tr class="hover:bg-slate-50 transition cursor-pointer" onclick="bukaModalPesan(${idx})">
+                    <td class="py-3 px-5 text-xs text-slate-500">${dateStr}</td>
+                    <td class="py-3 px-5 text-center"><img src="${foto}" class="w-10 h-10 rounded-full object-cover mx-auto shadow-sm"></td>
+                    <td class="py-3 px-5"><p class="font-bold text-slate-700">${p.nama}</p><p class="text-[10px] text-slate-400">${p.nama_panggilan}</p></td>
+                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs border font-bold">${p.kelas}</span></td>
+                    <td class="py-3 px-5"><div class="w-48 truncate text-slate-600 text-xs font-medium">${p.isi}</div></td>
+                    <td class="py-3 px-5 text-center">
+                        <button onclick="hapusPesan(event, '${p.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg cursor-pointer transition"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        window.hapusPesan = async function(e, id) {
+            e.stopPropagation();
+            if(!confirm('Hapus pesan ini?')) return;
+            if(IS_PREVIEW) {
+                appState.pesan = appState.pesan.filter(p => p.id !== id);
+                renderAdminPesan(); renderAdminDashboard(); return;
+            }
+            try {
+                await db.collection("pesan").doc(id).delete();
+                appState.pesan = appState.pesan.filter(p => p.id !== id);
+                renderAdminPesan(); renderAdminDashboard();
+            } catch(err) { Swal.fire('Gagal', err.message, 'error'); }
+        }
+
+        window.bukaModalPesan = function(index) {
+            window.currentPesanIndex = index;
+            document.getElementById('pesan-modal-total').innerText = window.filteredPesanList.length;
+            renderPesanModal();
+            const modal = document.getElementById('modal-pesan-detail');
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('flex');
+            modal.classList.remove('hidden');
+        }
+
+        window.tutupModalPesan = function() {
+            const modal = document.getElementById('modal-pesan-detail');
+            modal.classList.add('modal-hidden');
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+        }
+
+        function renderPesanModal() {
+            const p = window.filteredPesanList[window.currentPesanIndex];
+            if(!p) return;
+            
+            const dateStr = p.timestamp.includes('T') ? new Date(p.timestamp).toLocaleString('id-ID') : p.timestamp;
+            document.getElementById('pesan-modal-nama').innerText = p.nama;
+            document.getElementById('pesan-modal-kelas').innerText = p.kelas;
+            document.getElementById('pesan-modal-panggilan-text').innerText = p.nama_panggilan || '-';
+            document.getElementById('pesan-modal-waktu').innerHTML = `<i class="fas fa-clock mr-1.5"></i> ${dateStr}`;
+            document.getElementById('pesan-modal-isi').innerText = p.isi;
+            document.getElementById('pesan-modal-foto').src = p.foto || getFunnyAvatar(p.nama);
+            
+            document.getElementById('pesan-modal-counter').innerText = window.currentPesanIndex + 1;
+            
+            document.getElementById('btn-pesan-prev').disabled = (window.currentPesanIndex === 0);
+            document.getElementById('btn-pesan-next').disabled = (window.currentPesanIndex === window.filteredPesanList.length - 1);
+        }
+
+        window.navModalPesan = function(step) {
+            window.currentPesanIndex += step;
+            if(window.currentPesanIndex < 0) window.currentPesanIndex = 0;
+            if(window.currentPesanIndex >= window.filteredPesanList.length) window.currentPesanIndex = window.filteredPesanList.length - 1;
+            renderPesanModal();
+        }
+
+        window.downloadPesanZip = async function() {
+            if(window.filteredPesanList.length === 0) return Swal.fire('Kosong', 'Tidak ada pesan untuk diunduh.', 'info');
+            
+            Swal.fire({title: 'Membuat ZIP...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+            
+            const zip = new JSZip();
+            let csvContent = "Waktu,Nama,Panggilan,Kelas,Pesan\n";
+            
+            window.filteredPesanList.forEach((p, i) => {
+                const dateStr = p.timestamp.includes('T') ? new Date(p.timestamp).toLocaleString('id-ID') : p.timestamp;
+                const cleanIsi = p.isi.replace(/"/g, '""').replace(/\n/g, ' ');
+                csvContent += `"${dateStr}","${p.nama}","${p.nama_panggilan}","${p.kelas}","${cleanIsi}"\n`;
+                
+                if(p.foto && p.foto.startsWith('data:image')) {
+                    const base64Data = p.foto.split(',')[1];
+                    const ext = p.foto.substring(p.foto.indexOf('/')+1, p.foto.indexOf(';'));
+                    zip.file(`Foto_${p.kelas}_${p.nama.replace(/\s+/g, '_')}.${ext}`, base64Data, {base64: true});
+                }
+            });
+            
+            zip.file("Data_Pesan.csv", csvContent);
+            
+            zip.generateAsync({type:"blob"}).then(function(content) {
+                saveAs(content, "Rekap_Pesan_Siswa.zip");
+                Swal.close();
+            });
         }
 
         window.handleUpdateMateriTugas = async function(e) {
@@ -1557,339 +1855,20 @@
                 tugas: document.getElementById('tugas-link-input').value
             };
             if(IS_PREVIEW) {
-                appState.materiTugas = data; renderPublicUI(); Swal.fire('Sukses', 'Materi/Tugas diperbarui!', 'success');
-            } else {
-                try {
-                    await db.collection("pengaturan").doc("materi_tugas").set(data);
-                    appState.materiTugas = data; renderPublicUI(); Swal.fire('Sukses', 'Materi/Tugas diperbarui!', 'success');
-                } catch(err) { Swal.fire('Error', err.message, 'error'); }
+                appState.materiTugas = data; renderPublicUI();
+                Swal.fire('Disimpan', 'Materi & Tugas diupdate (Preview)', 'success'); return;
             }
+            try {
+                await db.collection("pengaturan").doc("materi_tugas").set(data);
+                appState.materiTugas = data; renderPublicUI();
+                Swal.fire('Disimpan', 'Materi & Tugas berhasil diupdate', 'success');
+            } catch(err) { Swal.fire('Gagal', err.message, 'error'); }
         }
 
-        window.handleUbahPassword = function(e) {
-            e.preventDefault();
-            if(IS_PREVIEW) return Swal.fire('Sukses', 'Password diubah (Dummy).', 'success');
-            const p1 = document.getElementById('pwd-baru').value;
-            const p2 = document.getElementById('pwd-konfirm').value;
-            if(p1 !== p2) return Swal.fire('Error', 'Password tidak cocok.', 'error');
-            if(p1.length < 6) return Swal.fire('Error', 'Password minimal 6 karakter.', 'error');
-            
-            const user = auth.currentUser;
-            if(user) {
-                user.updatePassword(p1).then(() => {
-                    Swal.fire('Sukses', 'Password berhasil diubah.', 'success');
-                    e.target.reset();
-                }).catch(err => Swal.fire('Error', err.message, 'error'));
-            }
-        }
-
-        window.renderAdminAbsensi = function() {
-            const kelas = document.getElementById('absensi-filter-kelas').value;
-            const actionBtns = document.getElementById('absensi-action-buttons');
-            const containerSekaligus = document.getElementById('container-absen-sekaligus');
-            
-            if(!kelas) {
-                actionBtns.classList.add('hidden'); containerSekaligus.classList.add('hidden'); return;
-            }
-            
-            actionBtns.classList.remove('hidden');
-            
-            const ta = document.getElementById('absensi-filter-ta').value;
-            const tanggal = document.getElementById('absensi-filter-tanggal').value;
-            const docId = `${tanggal}_${kelas}_${ta.replace(/\//g,'-')}`;
-            
-            window.filteredSiswaAbsenList = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
-            
-            // Get existing records
-            if(appState.absensi[docId]) {
-                window.currentAbsenRecords = {...appState.absensi[docId]};
-            } else {
-                window.currentAbsenRecords = {};
-                // Default Hadir
-                window.filteredSiswaAbsenList.forEach(s => window.currentAbsenRecords[s.nama] = 'H');
-            }
-
-            renderTabelAbsenSekaligus();
-        }
-
-        window.setModeAbsensi = function(mode) {
-            const btnSatu = document.getElementById('btn-mode-satu');
-            const btnSekaligus = document.getElementById('btn-mode-sekaligus');
-            const containerSekaligus = document.getElementById('container-absen-sekaligus');
-
-            if (mode === 'satu') {
-                if(window.filteredSiswaAbsenList.length === 0) return Swal.fire('Info', 'Pilih kelas dengan siswa terlebih dahulu.', 'info');
-                bukaModalAbsen(0);
-            } else {
-                containerSekaligus.classList.remove('hidden');
-                btnSekaligus.classList.replace('bg-transparent', 'bg-teal-600');
-                btnSekaligus.classList.replace('text-slate-500', 'text-white');
-                btnSekaligus.classList.add('shadow-md');
-                
-                btnSatu.classList.replace('bg-teal-600', 'bg-transparent');
-                btnSatu.classList.replace('text-white', 'text-slate-500');
-                btnSatu.classList.remove('shadow-md');
-            }
-        }
-
-        function renderTabelAbsenSekaligus() {
-            const tbody = document.getElementById('admin-absensi-body');
-            tbody.innerHTML = '';
-            
-            if(window.filteredSiswaAbsenList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-slate-500">Tidak ada siswa di kelas ini.</td></tr>';
-                return;
-            }
-
-            window.filteredSiswaAbsenList.forEach(s => {
-                const status = window.currentAbsenRecords[s.nama] || 'H';
-                const fotoUrl = getSiswaPhoto(s.nama);
-                tbody.innerHTML += `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="py-2 px-5 text-center">
-                        <img src="${fotoUrl}" class="w-10 h-10 rounded-full object-cover border border-slate-200 mx-auto shadow-sm bg-white">
-                    </td>
-                    <td class="py-3 px-5 font-bold text-slate-700">${s.nama}</td>
-                    <td class="py-3 px-5">
-                        <select onchange="updateRecordAbsen('${s.nama}', this.value)" class="w-full p-2 border rounded-xl text-sm font-bold outline-none cursor-pointer ${getColorForStatus(status)}">
-                            <option value="H" ${status==='H'?'selected':''}>Hadir (H)</option>
-                            <option value="S" ${status==='S'?'selected':''}>Sakit (S)</option>
-                            <option value="I" ${status==='I'?'selected':''}>Izin (I)</option>
-                            <option value="A" ${status==='A'?'selected':''}>Alpha (A)</option>
-                        </select>
-                    </td>
-                </tr>`;
-            });
-        }
-
-        function getColorForStatus(status) {
-            if(status === 'H') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-            if(status === 'S') return 'bg-amber-50 text-amber-700 border-amber-200';
-            if(status === 'I') return 'bg-blue-50 text-blue-700 border-blue-200';
-            if(status === 'A') return 'bg-red-50 text-red-700 border-red-200';
-            return 'bg-slate-50';
-        }
-
-        window.updateRecordAbsen = function(nama, val) {
-            window.currentAbsenRecords[nama] = val;
-            renderTabelAbsenSekaligus(); // Update colors
-        }
-
-        window.simpanSemuaAbsensi = async function() {
-            const kelas = document.getElementById('absensi-filter-kelas').value;
-            const ta = document.getElementById('absensi-filter-ta').value;
-            const tanggal = document.getElementById('absensi-filter-tanggal').value;
-            const docId = `${tanggal}_${kelas}_${ta.replace(/\//g,'-')}`;
-
-            if(IS_PREVIEW) {
-                appState.absensi[docId] = window.currentAbsenRecords;
-                Swal.fire('Sukses', 'Data absensi disimpan (Preview).', 'success');
-            } else {
-                try {
-                    Swal.fire({ title: 'Menyimpan...', didOpen: () => { Swal.showLoading(); } });
-                    await db.collection("absensi").doc(docId).set(window.currentAbsenRecords);
-                    appState.absensi[docId] = window.currentAbsenRecords;
-                    Swal.fire('Sukses', 'Data absensi disimpan.', 'success');
-                } catch(e) { Swal.fire('Error', e.message, 'error'); }
-            }
-        }
-
-        window.bukaModalAbsen = function(idx) {
-            if(idx < 0 || idx >= window.filteredSiswaAbsenList.length) return;
-            window.currentAbsenIndex = idx;
-            const siswa = window.filteredSiswaAbsenList[idx];
-            
-            document.getElementById('absen-modal-nama').innerText = siswa.nama;
-            document.getElementById('absen-modal-kelas').innerHTML = `<i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> ${siswa.kelas}`;
-            document.getElementById('absen-modal-foto').src = getSiswaPhoto(siswa.nama);
-            
-            document.getElementById('absen-modal-counter').innerText = idx + 1;
-            document.getElementById('absen-modal-total').innerText = window.filteredSiswaAbsenList.length;
-            
-            // Set active button
-            const status = window.currentAbsenRecords[siswa.nama] || 'H';
-            ['H','S','I','A'].forEach(k => {
-                const btn = document.getElementById(`btn-status-${k}`);
-                if(k === status) {
-                    btn.classList.add('ring-2', 'ring-offset-2', 'shadow-md');
-                    if(k==='H') btn.classList.add('ring-emerald-400', 'bg-emerald-50');
-                    if(k==='S') btn.classList.add('ring-amber-400', 'bg-amber-50');
-                    if(k==='I') btn.classList.add('ring-blue-400', 'bg-blue-50');
-                    if(k==='A') btn.classList.add('ring-red-400', 'bg-red-50');
-                } else {
-                    btn.className = btn.className.replace(/ring-2 ring-offset-2 shadow-md ring-\w+-400 bg-\w+-50/g, '');
-                }
-            });
-
-            document.getElementById('modal-absen-individu').classList.remove('modal-hidden');
-        }
-
-        window.tutupModalAbsen = function() {
-            document.getElementById('modal-absen-individu').classList.add('modal-hidden');
-            renderTabelAbsenSekaligus(); // Sync table view
-            simpanSemuaAbsensi(); // Auto save
-        }
-
-        window.navModalAbsen = function(step) {
-            const newIdx = window.currentAbsenIndex + step;
-            if(newIdx >= 0 && newIdx < window.filteredSiswaAbsenList.length) {
-                bukaModalAbsen(newIdx);
-            } else if (newIdx >= window.filteredSiswaAbsenList.length) {
-                Swal.fire({
-                    title: 'Selesai!', text: 'Semua siswa telah diabsen. Simpan data?', icon: 'success',
-                    showCancelButton: true, confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Nanti'
-                }).then((res) => {
-                    if(res.isConfirmed) { tutupModalAbsen(); }
-                });
-            }
-        }
-
-        window.pilihStatusIndividu = function(status) {
-            const siswa = window.filteredSiswaAbsenList[window.currentAbsenIndex];
-            window.currentAbsenRecords[siswa.nama] = status;
-            
-            // Small delay for visual feedback then next
-            setTimeout(() => { navModalAbsen(1); }, 200);
-        }
-
-        window.exportAbsensiExcel = function() {
-            const ws_data = [["Tanggal", "Kelas", "Nama Siswa", "Status Absensi"]];
-            const ta = document.getElementById('absensi-filter-ta').value;
-            
-            for(let key in appState.absensi) {
-                const parts = key.split('_'); // YYYY-MM-DD, Kelas, TA
-                if(parts.length >= 3 && parts[2] === ta.replace(/\//g,'-')) {
-                    const tgl = parts[0]; const kls = parts[1];
-                    const rec = appState.absensi[key];
-                    for(let nama in rec) {
-                        ws_data.push([tgl, kls, nama, rec[nama]]);
-                    }
-                }
-            }
-            if(ws_data.length === 1) return Swal.fire('Info', 'Belum ada data absensi untuk TA ini.', 'info');
-            
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Rekap Absensi");
-            XLSX.writeFile(wb, `Rekap_Absensi_${ta.replace(/\//g,'-')}.xlsx`);
-        }
-
-        window.renderAdminPesan = function() {
-            const filterKelas = document.getElementById('filter-kelas-pesan').value;
-            const tbody = document.getElementById('admin-pesan-body');
-            tbody.innerHTML = '';
-            
-            window.filteredPesanList = appState.pesan;
-            if(filterKelas) {
-                window.filteredPesanList = appState.pesan.filter(p => p.kelas === filterKelas);
-            }
-
-            if(window.filteredPesanList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-slate-400 font-bold">Belum ada pesan masuk.</td></tr>';
-                return;
-            }
-
-            window.filteredPesanList.forEach((p, index) => {
-                const ts = p.timestamp && typeof p.timestamp.toDate === 'function' ? p.timestamp.toDate().toLocaleString('id-ID') : p.timestamp;
-                const shortIsi = p.isi.length > 40 ? p.isi.substring(0, 40) + '...' : p.isi;
-                const fUrl = p.foto || getFunnyAvatar(p.nama);
-                tbody.innerHTML += `
-                <tr class="hover:bg-indigo-50/50 transition">
-                    <td class="py-3 px-5 text-xs text-slate-500">${ts}</td>
-                    <td class="py-3 px-5 text-center"><img src="${fUrl}" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm mx-auto bg-white"></td>
-                    <td class="py-3 px-5 font-bold text-slate-700">${p.nama} <br><span class="text-xs text-indigo-500 font-normal">"${p.nama_panggilan}"</span></td>
-                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs font-bold border border-indigo-100">${p.kelas}</span></td>
-                    <td class="py-3 px-5 text-xs italic text-slate-600">${shortIsi}</td>
-                    <td class="py-3 px-5 text-center space-x-2">
-                        <button onclick="bukaModalPesan(${index})" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 p-1.5 rounded-lg border border-indigo-100"><i class="fas fa-eye"></i></button>
-                        <button onclick="hapusPesan('${p.id}')" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded-lg border border-red-100"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-            });
-        }
-
-        window.bukaModalPesan = function(idx) {
-            if(idx < 0 || idx >= window.filteredPesanList.length) return;
-            window.currentPesanIndex = idx;
-            const p = window.filteredPesanList[idx];
-            
-            const ts = p.timestamp && typeof p.timestamp.toDate === 'function' ? p.timestamp.toDate().toLocaleString('id-ID') : p.timestamp;
-            document.getElementById('pesan-modal-foto').src = p.foto || getFunnyAvatar(p.nama);
-            document.getElementById('pesan-modal-kelas').innerText = p.kelas;
-            document.getElementById('pesan-modal-waktu').innerHTML = `<i class="fas fa-clock mr-1.5"></i> ${ts}`;
-            document.getElementById('pesan-modal-nama').innerText = p.nama;
-            document.getElementById('pesan-modal-panggilan-text').innerText = p.nama_panggilan;
-            document.getElementById('pesan-modal-isi').innerText = p.isi;
-            
-            document.getElementById('pesan-modal-counter').innerText = idx + 1;
-            document.getElementById('pesan-modal-total').innerText = window.filteredPesanList.length;
-            
-            document.getElementById('btn-pesan-prev').disabled = idx === 0;
-            document.getElementById('btn-pesan-next').disabled = idx === window.filteredPesanList.length - 1;
-
-            document.getElementById('modal-pesan-detail').classList.remove('modal-hidden');
-        }
-
-        window.tutupModalPesan = function() {
-            document.getElementById('modal-pesan-detail').classList.add('modal-hidden');
-        }
-
-        window.navModalPesan = function(step) {
-            const newIdx = window.currentPesanIndex + step;
-            if(newIdx >= 0 && newIdx < window.filteredPesanList.length) {
-                bukaModalPesan(newIdx);
-            }
-        }
-
-        window.hapusPesan = async function(id) {
-            if(confirm("Hapus pesan ini? Data tidak dapat dikembalikan.")) {
-                if(IS_PREVIEW) {
-                    appState.pesan = appState.pesan.filter(p => p.id !== id);
-                    renderAdminPesan(); renderAdminDashboard();
-                } else {
-                    try {
-                        await db.collection("pesan").doc(id).delete();
-                        appState.pesan = appState.pesan.filter(p => p.id !== id);
-                        renderAdminPesan(); renderAdminDashboard();
-                    } catch(e) { Swal.fire('Error', e.message, 'error'); }
-                }
-            }
-        }
-
-        window.downloadPesanZip = async function() {
-            if(window.filteredPesanList.length === 0) return Swal.fire('Info', 'Tidak ada pesan untuk diunduh.', 'info');
-            Swal.fire({ title: 'Menyiapkan ZIP...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-            
-            const zip = new JSZip();
-            const ws_data = [["Waktu", "Nama Lengkap", "Panggilan", "Kelas", "Harapan Pembelajaran", "Nama File Foto"]];
-            
-            for(let i=0; i<window.filteredPesanList.length; i++) {
-                const p = window.filteredPesanList[i];
-                const ts = p.timestamp && typeof p.timestamp.toDate === 'function' ? p.timestamp.toDate().toLocaleString('id-ID') : p.timestamp;
-                let filename = "no_photo.txt";
-                
-                if(p.foto && p.foto.startsWith('http')) {
-                    try {
-                        const response = await fetch(p.foto);
-                        const blob = await response.blob();
-                        filename = `${p.kelas}_${p.nama.replace(/\s+/g,'_')}.jpg`;
-                        zip.file("Foto/" + filename, blob);
-                    } catch(e) { console.warn("Gagal fetch foto:", p.foto); }
-                } else if (!p.foto) {
-                    filename = "avatar_konyol_digenerate_otomatis";
-                }
-                
-                ws_data.push([ts, p.nama, p.nama_panggilan, p.kelas, p.isi, filename]);
-            }
-            
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
-            const csv = XLSX.utils.sheet_to_csv(ws);
-            zip.file("Data_Pesan.csv", csv);
-            
-            zip.generateAsync({type:"blob"}).then(function(content) {
-                saveAs(content, `Export_Pesan_${document.getElementById('filter-kelas-pesan').value || 'Semua_Kelas'}.zip`);
-                Swal.fire('Sukses', 'File ZIP berhasil diunduh.', 'success');
-            });
+        window.renderAdminMateri = function() {
+            const mt = appState.materiTugas || {};
+            document.getElementById('materi-link-input').value = mt.materi || '';
+            document.getElementById('tugas-link-input').value = mt.tugas || '';
         }
     </script>
 </body>
