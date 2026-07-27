@@ -703,73 +703,49 @@
         </div>
     </main>
 
-    <!-- OVERLAY MODAL ABSEN SATU PERSATU (REVISED LAYOUT & SIZES) -->
+    <!-- OVERLAY MODAL ABSEN SATU PERSATU -->
     <div id="modal-absen-individu" class="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm modal-overlay modal-hidden p-4">
         <div class="modal-content bg-white rounded-[2rem] w-full max-w-4xl p-6 md:p-8 mx-auto flex flex-col md:flex-row gap-8 relative shadow-2xl overflow-hidden">
-            <!-- decorative background -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full blur-3xl -mr-20 -mt-20 opacity-50 z-0 pointer-events-none"></div>
-            
             <button onclick="tutupModalAbsen()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 z-20 transition transform hover:rotate-90 cursor-pointer bg-white/80 backdrop-blur-md rounded-full p-2.5 shadow-sm border border-slate-100">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            
-            <!-- BAGIAN KIRI: FOTO SISWA -->
             <div class="w-full md:w-5/12 relative z-10 flex flex-col items-center justify-center">
                 <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-[2rem] overflow-hidden flex flex-col items-center justify-center relative shadow-inner border border-slate-200 aspect-[4/5] w-full max-w-[280px] p-3 mx-auto">
                     <img id="absen-modal-foto" src="" class="w-full h-full object-cover rounded-[1.5rem] shadow-sm bg-white">
                 </div>
             </div>
-            
-            <!-- BAGIAN KANAN: IDENTITAS & TOMBOL STATUS -->
             <div class="w-full md:w-7/12 flex flex-col justify-center py-2 relative z-10">
                 <div class="mb-6 text-center md:text-left">
                     <h3 id="absen-modal-nama" class="text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight break-words mb-2">Nama Siswa</h3>
                     <span id="absen-modal-kelas" class="bg-teal-50 text-teal-700 px-3 py-1.5 rounded-full uppercase tracking-wider text-xs font-extrabold border border-teal-100 shadow-sm inline-flex items-center justify-center">
                         <i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> Kelas
                     </span>
-                    <p class="text-sm font-medium text-slate-500 mt-4">Silakan pilih status absensi untuk hari ini.</p>
                 </div>
-
-                <!-- Tombol H S I A -->
                 <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-8">
                     <button onclick="pilihStatusIndividu('H')" id="btn-status-H" class="group py-4 rounded-[1.25rem] border border-slate-200 bg-white hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-md text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden">
-                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-emerald-100 flex items-center justify-center transition-colors relative z-10">
-                            <i class="fas fa-check text-emerald-500 text-base group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span class="relative z-10">Hadir</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-emerald-100 flex items-center justify-center transition-colors relative z-10"><i class="fas fa-check text-emerald-500 text-base"></i></div><span class="relative z-10">Hadir</span>
                     </button>
                     <button onclick="pilihStatusIndividu('S')" id="btn-status-S" class="group py-4 rounded-[1.25rem] border border-slate-200 bg-white hover:border-amber-400 hover:bg-amber-50 hover:shadow-md text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden">
-                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-amber-100 flex items-center justify-center transition-colors relative z-10">
-                            <i class="fas fa-briefcase-medical text-amber-500 text-base group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span class="relative z-10">Sakit</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-amber-100 flex items-center justify-center transition-colors relative z-10"><i class="fas fa-briefcase-medical text-amber-500 text-base"></i></div><span class="relative z-10">Sakit</span>
                     </button>
                     <button onclick="pilihStatusIndividu('I')" id="btn-status-I" class="group py-4 rounded-[1.25rem] border border-slate-200 bg-white hover:border-blue-400 hover:bg-blue-50 hover:shadow-md text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden">
-                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors relative z-10">
-                            <i class="fas fa-envelope-open-text text-blue-500 text-base group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span class="relative z-10">Izin</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors relative z-10"><i class="fas fa-envelope-open-text text-blue-500 text-base"></i></div><span class="relative z-10">Izin</span>
                     </button>
                     <button onclick="pilihStatusIndividu('A')" id="btn-status-A" class="group py-4 rounded-[1.25rem] border border-slate-200 bg-white hover:border-red-400 hover:bg-red-50 hover:shadow-md text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden">
-                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-red-100 flex items-center justify-center transition-colors relative z-10">
-                            <i class="fas fa-times text-red-500 text-base group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span class="relative z-10">Alpha</span>
+                        <div class="w-10 h-10 rounded-full bg-slate-50 group-hover:bg-red-100 flex items-center justify-center transition-colors relative z-10"><i class="fas fa-times text-red-500 text-base"></i></div><span class="relative z-10">Alpha</span>
                     </button>
                 </div>
-
                 <div class="flex justify-between items-center mt-auto border-t border-slate-100 pt-5 bg-slate-50/50 -mx-6 md:-mx-8 -mb-6 md:-mb-8 p-6 md:p-8 rounded-b-[2rem]">
                     <button onclick="navModalAbsen(-1)" id="btn-modal-prev" class="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl font-bold text-slate-600 text-sm transition shadow-sm flex items-center cursor-pointer">
                         <i class="fas fa-chevron-left mr-2"></i> Prev
                     </button>
-                    
                     <div class="flex flex-col items-center">
                         <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Progres</span>
                         <span class="text-slate-700 font-extrabold text-xs sm:text-sm bg-white px-4 py-1.5 rounded-full shadow-sm border border-slate-200">
                             <span id="absen-modal-counter">1</span> / <span id="absen-modal-total">30</span>
                         </span>
                     </div>
-                    
                     <button onclick="navModalAbsen(1)" id="btn-modal-next" class="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 border border-teal-600 text-white rounded-xl font-bold text-sm shadow-md transition flex items-center cursor-pointer">
                         Next <i class="fas fa-chevron-right ml-2"></i>
                     </button>
@@ -784,7 +760,6 @@
             <button onclick="tutupModalPesan()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 z-20 transition transform hover:rotate-90 cursor-pointer bg-white/80 backdrop-blur-md rounded-full p-2 shadow-sm">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            
             <div class="w-full md:w-2/5 relative bg-slate-100 min-h-[250px] md:min-h-[400px]">
                 <img id="pesan-modal-foto" src="" alt="Foto Siswa" class="w-full h-full object-cover absolute inset-0 bg-white">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/30 to-transparent flex flex-col justify-end p-6 md:p-8">
@@ -795,7 +770,6 @@
                     <p class="text-indigo-200 font-bold text-sm flex items-center drop-shadow-sm"><i class="fas fa-user-tag mr-1.5"></i> Panggilan: <span id="pesan-modal-panggilan-text" class="ml-1 text-white">-</span></p>
                 </div>
             </div>
-            
             <div class="w-full md:w-3/5 flex flex-col bg-white">
                 <div class="p-6 md:p-8 flex-grow overflow-y-auto">
                     <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
@@ -809,7 +783,6 @@
                             <i class="fas fa-clock mr-1.5"></i> Waktu
                         </span>
                     </div>
-                    
                     <div class="relative mt-4">
                         <i class="fas fa-quote-left text-4xl text-slate-100 absolute -top-4 -left-2 z-0"></i>
                         <div class="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 p-5 md:p-6 rounded-2xl border border-indigo-100/50 shadow-inner relative z-10 min-h-[150px]">
@@ -820,16 +793,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="pesan-modal-nav" class="flex justify-between items-center p-5 md:p-6 bg-slate-50 border-t border-slate-100 mt-auto">
                     <button onclick="navModalPesan(-1)" id="btn-pesan-prev" class="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-xl font-extrabold text-xs sm:text-sm transition shadow-sm flex items-center cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
                         <i class="fas fa-chevron-left mr-2"></i> Prev
                     </button>
-                    
                     <span class="text-slate-500 font-extrabold text-xs sm:text-sm bg-white px-4 py-1.5 rounded-full shadow-sm border border-slate-200">
                         <span id="pesan-modal-counter">1</span> / <span id="pesan-modal-total">1</span>
                     </span>
-                    
                     <button onclick="navModalPesan(1)" id="btn-pesan-next" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 border border-indigo-600 text-white rounded-xl font-extrabold text-xs sm:text-sm transition shadow-md flex items-center cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
                         Next <i class="fas fa-chevron-right ml-2"></i>
                     </button>
@@ -869,16 +839,16 @@
                     console.warn("Firebase persistence error:", err.code);
                 });
             } catch(e) {
-                console.error("Firebase init error", e);
+                console.error("Firebase init error. Pastikan API keys valid.", e);
             }
         }
 
-        // STATE
+        // STATE APLIKASI
         window.appState = { isLoggedIn: false, profil: {}, jadwal: [], siswa: [], pesan: [], absensi: {}, materiTugas: {} };
         const flowSequence = ['view-beranda', 'view-tentang', 'view-kesepakatan', 'view-jadwal', 'view-pesan', 'view-materi-tugas'];
         let activeViewId = null;
         
-        // Data Dummy
+        // DATA DUMMY (FALLBACK)
         const dummyProfil = {
             nama: "Bapak Budi Santoso", mapel: "Guru Matematika", motto: "Belajar bukan untuk ujian, tapi kehidupan.",
             deskripsi: "Halo! Saya Budi Santoso. Pendekatan mengajar saya dirancang santai namun terstruktur.",
@@ -895,14 +865,14 @@
         ];
         let dummyPesan = [{ id: "p1", timestamp: new Date().toLocaleString('id-ID'), foto: "", nama: "Andi Saputra", nama_panggilan: "Andi", kelas: "X MIPA 1", isi: "Saya ingin terus praktik di Ruang TIK pak agar makin mahir." }];
         let dummyMateriTugas = {
-            materi: "https://drive.google.com/file/d/demo-materi-matematika\nPelajari bab matriks bab 2 halaman 45.",
-            tugas: "https://forms.gle/demo-tugas-matematika\nKerjakan latihan 1 sampai 10 di buku latihan."
+            materi: "https://drive.google.com/file/d/demo-materi\nPelajari bab matriks halaman 45.",
+            tugas: "https://forms.gle/demo-tugas\nKerjakan latihan 1 sampai 10."
         };
         let dummyAbsensi = {};
 
         // INITIALIZATION
         async function runInit() {
-            if (IS_PREVIEW) document.getElementById('demo-credentials').classList.remove('hidden');
+            if (IS_PREVIEW || !db) document.getElementById('demo-credentials').classList.remove('hidden');
             
             const introLogo = document.getElementById('intro-logo');
             const btnLanjut = document.getElementById('btn-lanjut');
@@ -923,20 +893,19 @@
                     updateNavState();
                     if(user) fetchAdminData();
                 });
-                autoSetupDatabase(); // Non-blocking
+                autoSetupDatabase(); 
             } else {
                 updateNavState(); 
             }
-            await fetchPublicData(); // Dijalankan agar UI publik cepat muncul
+            await fetchPublicData();
         }
         
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', runInit);
-        } else {
-            runInit();
-        }
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', runInit); } 
+        else { runInit(); }
 
+        // SETUP DATABASE JIKA KOSONG (KHUSUS PERTAMA KALI)
         async function autoSetupDatabase() {
+            if(!db) return; // Proteksi jika db tidak terinisialisasi
             try {
                 const profilRef = db.collection("pengaturan").doc("profil_guru");
                 const snap = await profilRef.get();
@@ -946,7 +915,26 @@
                     for(let s of dummySiswa) await db.collection("siswa").add({nama: s.nama, kelas: s.kelas});
                     await db.collection("pengaturan").doc("materi_tugas").set(dummyMateriTugas);
                 }
-            } catch(e) { console.warn("Setup Firestore error.", e.message); }
+            } catch(e) { console.warn("Setup Firestore error (Bisa diabaikan jika tidak punya akses tulis).", e.message); }
+        }
+
+        // UI & NAVIGATION HELPERS
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobile-menu');
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            const icon = document.getElementById('hamburger-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); backdrop.classList.remove('hidden');
+                icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
+            } else {
+                closeMobileMenu();
+            }
+        }
+        window.closeMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+            document.getElementById('mobile-menu-backdrop').classList.add('hidden');
+            const icon = document.getElementById('hamburger-icon');
+            icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
         }
 
         window.mulaiAplikasi = function() {
@@ -999,7 +987,7 @@
             document.getElementById('mobile-nav-admin').style.display = isAuth ? 'flex' : 'none';
         }
 
-        // Avatar Generator & Photo Getter
+        // DATA PROCESSING HELPERS
         function getFunnyAvatar(name) {
             if (!name) name = "Siswa";
             const seed = encodeURIComponent(name);
@@ -1007,11 +995,8 @@
         }
 
         function getSiswaPhoto(namaSiswa) {
-            // Cek di appState pesan yang fotonya tidak kosong
             const pesanSiswa = appState.pesan.filter(p => p.nama === namaSiswa && p.foto && p.foto.trim() !== "");
-            if (pesanSiswa.length > 0) {
-                return pesanSiswa[0].foto;
-            }
+            if (pesanSiswa.length > 0) return pesanSiswa[0].foto;
             return getFunnyAvatar(namaSiswa);
         }
 
@@ -1025,8 +1010,9 @@
             });
         }
 
+        // FETCHING DATA PUBLIC
         async function fetchPublicData() {
-            if (IS_PREVIEW) {
+            if (IS_PREVIEW || !db) {
                 appState.profil = dummyProfil; appState.jadwal = dummyJadwal; 
                 appState.siswa = dummySiswa; appState.materiTugas = dummyMateriTugas; appState.pesan = dummyPesan;
             } else {
@@ -1042,26 +1028,30 @@
                     appState.siswa = sSnap.docs.map(d => ({id: d.id, ...d.data()}));
                     appState.materiTugas = mtSnap.exists ? mtSnap.data() : dummyMateriTugas;
                 } catch(e) { 
-                    console.warn("Koneksi Firebase bermasalah, menggunakan data dummy.", e.message);
+                    console.warn("Koneksi Firebase bermasalah, fallback ke dummy data.", e.message);
                     appState.profil = dummyProfil; appState.jadwal = dummyJadwal; 
                     appState.siswa = dummySiswa; appState.materiTugas = dummyMateriTugas;
                 }
                 
-                // Ambil pesan di background agar tidak memblokir render pertama
-                db.collection("pesan").orderBy("timestamp", "desc").limit(300).get().then(snap => {
+                // Ambil pesan di belakang layar 
+                try {
+                    const snap = await db.collection("pesan").orderBy("timestamp", "desc").limit(300).get();
                     appState.pesan = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                }).catch(e => console.warn(e));
+                } catch (e) {
+                    console.warn("Gagal mengambil data pesan", e.message);
+                    appState.pesan = dummyPesan;
+                }
             }
             renderPublicUI();
         }
 
+        // FETCHING DATA ADMIN
         function fetchAdminData() {
-            if (IS_PREVIEW) {
+            if (IS_PREVIEW || !db) {
                 appState.pesan = dummyPesan; appState.absensi = dummyAbsensi;
                 triggerRenderAdmin();
                 return;
             }
-            // Fetch pesan secara asinkron agar tidak lag
             db.collection("pesan").orderBy("timestamp", "desc").limit(300).get().then(pSnap => {
                 appState.pesan = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
                 document.getElementById('stat-pesan').innerText = appState.pesan.length;
@@ -1072,14 +1062,11 @@
         }
 
         function triggerRenderAdmin() {
-            renderAdminDashboard();
-            renderAdminProfil();
-            renderAdminJadwal();
-            renderAdminSiswa();
-            renderAdminMateri();
-            populateKelasDropdown();
+            renderAdminDashboard(); renderAdminProfil(); renderAdminJadwal();
+            renderAdminSiswa(); renderAdminMateri(); populateKelasDropdown();
         }
 
+        // RENDER PUBLIC UI
         function renderPublicUI() {
             const p = appState.profil;
             document.getElementById('pub-nama').innerText = p.nama || 'Nama Guru';
@@ -1154,10 +1141,11 @@
             });
         }
 
+        // ADMIN HANDLERS
         window.handleLoginAdmin = function(e) {
             e.preventDefault();
             const pwd = document.getElementById('login-password').value;
-            if(IS_PREVIEW) {
+            if(IS_PREVIEW || !auth) {
                 appState.isLoggedIn = true; updateNavState(); fetchAdminData(); Swal.fire('Sukses', 'Login mode preview berhasil', 'success'); showView('view-admin-dashboard'); document.getElementById('form-login').reset();
                 return;
             }
@@ -1168,7 +1156,7 @@
         }
 
         window.logoutAdmin = function() {
-            if(IS_PREVIEW) { appState.isLoggedIn = false; updateNavState(); showView('view-beranda'); return; }
+            if(IS_PREVIEW || !auth) { appState.isLoggedIn = false; updateNavState(); showView('view-beranda'); return; }
             auth.signOut().then(() => { appState.isLoggedIn = false; updateNavState(); showView('view-beranda'); });
         }
 
@@ -1203,7 +1191,7 @@
                 nohp: document.getElementById('edit-nohp').value, alamat: document.getElementById('edit-alamat').value,
                 kesepakatan: document.getElementById('edit-kesepakatan').value
             };
-            if(!IS_PREVIEW) await db.collection("pengaturan").doc("profil_guru").set(data);
+            if(!IS_PREVIEW && db) await db.collection("pengaturan").doc("profil_guru").set(data);
             appState.profil = data; fetchPublicData();
             Swal.fire('Tersimpan', 'Profil berhasil diperbarui.', 'success');
         }
@@ -1211,367 +1199,605 @@
         function renderAdminJadwal() {
             const tbody = document.getElementById('admin-jadwal-body'); tbody.innerHTML = '';
             getSortedJadwal(appState.jadwal).forEach(j => {
-                tbody.innerHTML += `<tr><td class="py-3 px-5 font-bold">${j.hari}</td><td class="py-3 px-5">${j.waktu}</td><td class="py-3 px-5">${j.kelas}</td><td class="py-3 px-5">${j.keterangan}</td><td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500 hover:text-red-700 p-2"><i class="fas fa-trash"></i></button></td></tr>`;
+                tbody.innerHTML += `<tr>
+                    <td class="py-3 px-5 font-bold text-slate-700">${j.hari}</td>
+                    <td class="py-3 px-5">${j.waktu}</td>
+                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-xs border border-indigo-100 font-bold">${j.kelas}</span></td>
+                    <td class="py-3 px-5 italic">${j.keterangan || '-'}</td>
+                    <td class="py-3 px-5 text-center"><button onclick="hapusJadwal('${j.id}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
             });
+            document.getElementById('stat-jadwal').innerText = appState.jadwal.length;
         }
 
         window.handleTambahJadwal = async function(e) {
             e.preventDefault();
-            const j = {
-                hari: document.getElementById('jadwal-hari').value, waktu: document.getElementById('jadwal-waktu').value,
-                kelas: document.getElementById('jadwal-kelas').value, keterangan: document.getElementById('jadwal-ket').value
+            const data = {
+                hari: document.getElementById('jadwal-hari').value,
+                waktu: document.getElementById('jadwal-waktu').value,
+                kelas: document.getElementById('jadwal-kelas').value,
+                keterangan: document.getElementById('jadwal-ket').value
             };
-            if(!IS_PREVIEW) {
-                const docRef = await db.collection("jadwal").add(j); j.id = docRef.id;
-            } else { j.id = Date.now().toString(); }
-            appState.jadwal.push(j); renderAdminJadwal(); document.getElementById('form-tambah-jadwal').reset(); fetchPublicData(); renderAdminDashboard();
+            if(!IS_PREVIEW && db) {
+                const ref = await db.collection("jadwal").add(data);
+                data.id = ref.id;
+            } else {
+                data.id = "temp_" + Date.now();
+            }
+            appState.jadwal.push(data);
+            renderAdminJadwal(); renderPublicUI(); renderAdminDashboard();
+            document.getElementById('form-tambah-jadwal').reset();
+            Swal.fire('Sukses', 'Jadwal ditambahkan', 'success');
         }
-        
+
         window.hapusJadwal = async function(id) {
-            if(!confirm("Hapus jadwal ini?")) return;
-            if(!IS_PREVIEW) await db.collection("jadwal").doc(id).delete();
-            appState.jadwal = appState.jadwal.filter(j => j.id !== id);
-            renderAdminJadwal(); fetchPublicData(); renderAdminDashboard();
+            if(confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+                if(!IS_PREVIEW && db) await db.collection("jadwal").doc(id).delete();
+                appState.jadwal = appState.jadwal.filter(j => j.id !== id);
+                renderAdminJadwal(); renderPublicUI(); renderAdminDashboard();
+            }
         }
 
         function renderAdminSiswa() {
             const tbody = document.getElementById('admin-siswa-body'); tbody.innerHTML = '';
-            [...appState.siswa].sort((a,b) => {
+            const sorted = [...appState.siswa].sort((a,b) => {
                 if(a.kelas !== b.kelas) return a.kelas.localeCompare(b.kelas);
                 return a.nama.localeCompare(b.nama);
-            }).forEach(s => {
-                tbody.innerHTML += `<tr><td class="py-3 px-6 font-bold text-slate-700">${s.nama}</td><td class="py-3 px-6"><span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs font-bold border border-slate-200">${s.kelas}</span></td><td class="py-3 px-6 text-center"><button onclick="hapusSiswa('${s.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg"><i class="fas fa-trash"></i></button></td></tr>`;
             });
+            sorted.forEach(s => {
+                tbody.innerHTML += `<tr>
+                    <td class="py-3 px-6 font-bold text-slate-700">${s.nama}</td>
+                    <td class="py-3 px-6"><span class="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-xs border border-blue-100 font-bold">${s.kelas}</span></td>
+                    <td class="py-3 px-6 text-center"><button onclick="hapusSiswa('${s.id}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+            });
+            document.getElementById('stat-siswa').innerText = appState.siswa.length;
         }
 
         window.handleTambahSiswa = async function(e) {
             e.preventDefault();
-            const s = { nama: document.getElementById('siswa-nama').value.trim(), kelas: document.getElementById('siswa-kelas').value.trim() };
-            if(!IS_PREVIEW) { const docRef = await db.collection("siswa").add(s); s.id = docRef.id; } else { s.id = Date.now().toString(); }
-            appState.siswa.push(s); renderAdminSiswa(); populateKelasDropdown(); document.getElementById('form-tambah-siswa').reset(); renderAdminDashboard();
+            const data = {
+                nama: document.getElementById('siswa-nama').value,
+                kelas: document.getElementById('siswa-kelas').value
+            };
+            if(!IS_PREVIEW && db) {
+                const ref = await db.collection("siswa").add(data);
+                data.id = ref.id;
+            } else {
+                data.id = "temp_" + Date.now();
+            }
+            appState.siswa.push(data);
+            renderAdminSiswa(); populateKelasDropdown(); renderAdminDashboard();
+            document.getElementById('form-tambah-siswa').reset();
+            Swal.fire('Sukses', 'Data Siswa ditambahkan', 'success');
         }
 
         window.hapusSiswa = async function(id) {
-            if(!confirm("Hapus siswa ini?")) return;
-            if(!IS_PREVIEW) await db.collection("siswa").doc(id).delete();
-            appState.siswa = appState.siswa.filter(s => s.id !== id);
-            renderAdminSiswa(); populateKelasDropdown(); renderAdminDashboard();
+            if(confirm('Hapus siswa ini dari database?')) {
+                if(!IS_PREVIEW && db) await db.collection("siswa").doc(id).delete();
+                appState.siswa = appState.siswa.filter(s => s.id !== id);
+                renderAdminSiswa(); populateKelasDropdown(); renderAdminDashboard();
+            }
         }
-        
+
         window.downloadTemplateExcel = function() {
-            const ws = XLSX.utils.aoa_to_sheet([["Nama Lengkap", "Kelas"], ["Contoh: Andi Saputra", "X MIPA 1"]]);
-            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Template_Siswa");
-            XLSX.writeFile(wb, "Template_Import_Siswa.xlsx");
+            const ws = XLSX.utils.json_to_sheet([{ Nama: "Andi Saputra", Kelas: "X MIPA 1" }, { Nama: "Budi Setiawan", Kelas: "X MIPA 2" }]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Siswa");
+            XLSX.writeFile(wb, "Template_Data_Siswa.xlsx");
         }
 
         window.handleImportExcel = function(e) {
-            e.preventDefault(); const file = document.getElementById('siswa-import-file').files[0];
+            e.preventDefault();
+            const file = document.getElementById('siswa-import-file').files[0];
             if(!file) return;
             const reader = new FileReader();
-            reader.onload = async function(ev) {
-                const data = new Uint8Array(ev.target.result);
+            reader.onload = async function(e) {
+                const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const json = XLSX.utils.sheet_to_json(sheet, {header: 1});
-                
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
                 let added = 0;
-                for(let i=1; i<json.length; i++) {
-                    const row = json[i];
-                    if(row[0] && row[1]) {
-                        const s = { nama: row[0].toString().trim(), kelas: row[1].toString().trim() };
-                        if(!IS_PREVIEW) { const ref = await db.collection("siswa").add(s); s.id = ref.id; } else { s.id = Date.now().toString()+i; }
-                        appState.siswa.push(s); added++;
+                
+                Swal.fire({title: 'Memproses data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() }});
+                
+                for(let row of jsonData) {
+                    const nama = row.Nama || row.nama;
+                    const kelas = row.Kelas || row.kelas;
+                    if(nama && kelas) {
+                        const newSiswa = {nama: String(nama).trim(), kelas: String(kelas).trim()};
+                        if(!IS_PREVIEW && db) {
+                            const ref = await db.collection("siswa").add(newSiswa);
+                            newSiswa.id = ref.id;
+                        } else {
+                            newSiswa.id = "temp_" + Math.random();
+                        }
+                        appState.siswa.push(newSiswa);
+                        added++;
                     }
                 }
-                Swal.fire('Sukses', `${added} siswa berhasil diimport.`, 'success');
-                renderAdminSiswa(); populateKelasDropdown(); renderAdminDashboard(); document.getElementById('form-import-siswa').reset();
+                
+                renderAdminSiswa(); populateKelasDropdown(); renderAdminDashboard();
+                document.getElementById('form-import-siswa').reset();
+                Swal.fire('Selesai', `Berhasil mengimport ${added} siswa.`, 'success');
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function renderAdminMateri() {
-            const mt = appState.materiTugas;
-            if(mt.materi) document.getElementById('materi-link-input').value = mt.materi;
-            if(mt.tugas) document.getElementById('tugas-link-input').value = mt.tugas;
-        }
+        let currentAbsensiMode = ''; // 'sekaligus' or 'satu'
+        let currentAbsenList = [];
+        let currentAbsenIndex = 0;
 
-        window.handleUpdateMateriTugas = async function(e) {
-            e.preventDefault();
-            const data = { materi: document.getElementById('materi-link-input').value, tugas: document.getElementById('tugas-link-input').value };
-            if(!IS_PREVIEW) await db.collection("pengaturan").doc("materi_tugas").set(data);
-            appState.materiTugas = data; fetchPublicData();
-            Swal.fire('Tersimpan', 'Materi & Tugas berhasil diperbarui.', 'success');
-        }
-
-        window.renderAdminAbsensi = async function() {
+        window.setModeAbsensi = function(mode) {
+            currentAbsensiMode = mode;
             const ta = document.getElementById('absensi-filter-ta').value;
             const kelas = document.getElementById('absensi-filter-kelas').value;
             const tanggal = document.getElementById('absensi-filter-tanggal').value;
-            const actionButtons = document.getElementById('absensi-action-buttons');
-            const containerSekaligus = document.getElementById('container-absen-sekaligus');
-            const tbody = document.getElementById('admin-absensi-body');
             
-            if(!kelas || !tanggal) { actionButtons.classList.add('hidden'); containerSekaligus.classList.add('hidden'); return; }
-            
-            const docId = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
-            tbody.innerHTML = `<tr><td colspan="3" class="text-center py-10"><i class="fas fa-spinner fa-spin text-teal-500 text-3xl mb-3"></i><p class="text-slate-500 font-bold">Memuat data...</p></td></tr>`;
-            actionButtons.classList.remove('hidden'); containerSekaligus.classList.remove('hidden');
-            
-            let absData = {};
-            if (IS_PREVIEW) { absData = appState.absensi[docId] || {}; } 
-            else {
-                try {
-                    const snap = await db.collection("absensi").doc(docId).get();
-                    if(snap.exists) { absData = snap.data(); appState.absensi[docId] = absData; }
-                } catch(e) { console.error(e); }
+            if(!kelas || !tanggal) {
+                Swal.fire('Perhatian', 'Pilih kelas dan tanggal terlebih dahulu', 'warning');
+                return;
             }
+
+            const btnSekaligus = document.getElementById('btn-mode-sekaligus');
+            const btnSatu = document.getElementById('btn-mode-satu');
+            const containerSekaligus = document.getElementById('container-absen-sekaligus');
+
+            if(mode === 'sekaligus') {
+                btnSekaligus.classList.replace('bg-transparent', 'bg-teal-600');
+                btnSekaligus.classList.replace('text-slate-500', 'text-white');
+                btnSekaligus.classList.add('shadow-md');
+                
+                btnSatu.classList.replace('bg-teal-600', 'bg-transparent');
+                btnSatu.classList.replace('text-white', 'text-slate-500');
+                btnSatu.classList.remove('shadow-md');
+                
+                containerSekaligus.classList.remove('hidden');
+                renderTableAbsenSekaligus(ta, kelas, tanggal);
+            } else if(mode === 'satu') {
+                currentAbsenList = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+                if(currentAbsenList.length === 0) {
+                    Swal.fire('Kosong', 'Tidak ada siswa di kelas ini.', 'info'); return;
+                }
+                currentAbsenIndex = 0;
+                bukaModalAbsen();
+            }
+        }
+
+        async function fetchAbsensiData(ta, kelas, tanggal) {
+            if(IS_PREVIEW || !db) return;
+            const key = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
+            if(appState.absensi[key]) return; // use cache if available
             
-            window.currentAbsenRecords = absData;
-            window.filteredSiswaAbsenList = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+            try {
+                const snap = await db.collection("absensi").where("ta", "==", ta).where("kelas", "==", kelas).where("tanggal", "==", tanggal).get();
+                let record = {};
+                snap.docs.forEach(d => {
+                    const data = d.data();
+                    record[data.siswaId] = data.status;
+                });
+                appState.absensi[key] = record;
+            } catch(e) { console.warn("Gagal load absensi", e); }
+        }
+
+        window.renderAdminAbsensi = async function() {
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            const actionBtns = document.getElementById('absensi-action-buttons');
+            const containerSekaligus = document.getElementById('container-absen-sekaligus');
             
-            if(window.filteredSiswaAbsenList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 font-bold text-slate-500">Tidak ada data siswa di kelas ini.</td></tr>`;
+            if(!kelas) {
+                actionBtns.classList.add('hidden');
+                containerSekaligus.classList.add('hidden');
                 return;
             }
             
-            let html = '';
-            window.filteredSiswaAbsenList.forEach((siswa) => {
-                const status = window.currentAbsenRecords[siswa.nama] || '';
-                const foto = getSiswaPhoto(siswa.nama);
-                const colorClass = status === 'H' ? 'bg-emerald-50 text-emerald-700' : (status === 'S' ? 'bg-amber-50 text-amber-700' : (status === 'I' ? 'bg-blue-50 text-blue-700' : (status === 'A' ? 'bg-red-50 text-red-700' : 'bg-white')));
-                html += `
-                <tr class="hover:bg-slate-50/50 transition border-b border-slate-100">
-                    <td class="py-2 px-3 text-center w-16"><img src="${foto}" class="w-10 h-10 rounded-full object-cover shadow-sm mx-auto border border-slate-200 bg-white"></td>
-                    <td class="py-2 px-3 font-bold text-slate-700">${siswa.nama}</td>
-                    <td class="py-2 px-3 text-center w-48">
-                        <select onchange="updateTempAbsensi('${siswa.nama}', this.value)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm font-bold outline-none cursor-pointer ${colorClass}">
-                            <option value="" ${!status?'selected':''}>- Pilih -</option>
-                            <option value="H" ${status==='H'?'selected':''}>Hadir (H)</option>
-                            <option value="S" ${status==='S'?'selected':''}>Sakit (S)</option>
-                            <option value="I" ${status==='I'?'selected':''}>Izin (I)</option>
-                            <option value="A" ${status==='A'?'selected':''}>Alpha (A)</option>
-                        </select>
+            actionBtns.classList.remove('hidden');
+            const ta = document.getElementById('absensi-filter-ta').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            
+            await fetchAbsensiData(ta, kelas, tanggal);
+            
+            if(currentAbsensiMode === 'sekaligus') {
+                renderTableAbsenSekaligus(ta, kelas, tanggal);
+            }
+        }
+
+        function renderTableAbsenSekaligus(ta, kelas, tanggal) {
+            const tbody = document.getElementById('admin-absensi-body'); tbody.innerHTML = '';
+            const listSiswa = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+            const key = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
+            const record = appState.absensi[key] || {};
+
+            listSiswa.forEach(s => {
+                const status = record[s.id] || '';
+                const foto = getSiswaPhoto(s.nama);
+                
+                const btnClass = (val) => status === val 
+                    ? (val==='H'?'bg-emerald-500 text-white border-emerald-600':val==='S'?'bg-amber-500 text-white border-amber-600':val==='I'?'bg-blue-500 text-white border-blue-600':'bg-red-500 text-white border-red-600') 
+                    : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200';
+
+                tbody.innerHTML += `<tr>
+                    <td class="py-2 px-5 text-center"><img src="${foto}" class="w-10 h-10 rounded-full object-cover mx-auto border border-slate-200"></td>
+                    <td class="py-3 px-5 font-bold text-slate-700 whitespace-normal min-w-[150px]">${s.nama}</td>
+                    <td class="py-3 px-5">
+                        <div class="flex justify-center gap-1 sm:gap-2">
+                            <button onclick="pilihStatusSekaligus('${s.id}', 'H')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-bold text-xs border ${btnClass('H')} transition-colors shadow-sm cursor-pointer">H</button>
+                            <button onclick="pilihStatusSekaligus('${s.id}', 'S')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-bold text-xs border ${btnClass('S')} transition-colors shadow-sm cursor-pointer">S</button>
+                            <button onclick="pilihStatusSekaligus('${s.id}', 'I')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-bold text-xs border ${btnClass('I')} transition-colors shadow-sm cursor-pointer">I</button>
+                            <button onclick="pilihStatusSekaligus('${s.id}', 'A')" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl font-bold text-xs border ${btnClass('A')} transition-colors shadow-sm cursor-pointer">A</button>
+                        </div>
                     </td>
                 </tr>`;
             });
-            tbody.innerHTML = html;
         }
 
-        window.updateTempAbsensi = function(nama, val) {
-            window.currentAbsenRecords[nama] = val;
-            renderAdminAbsensi(); // Re-render to update colors
+        window.pilihStatusSekaligus = function(siswaId, status) {
+            const ta = document.getElementById('absensi-filter-ta').value;
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            const key = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
+            
+            if(!appState.absensi[key]) appState.absensi[key] = {};
+            appState.absensi[key][siswaId] = status;
+            
+            renderTableAbsenSekaligus(ta, kelas, tanggal);
         }
 
         window.simpanSemuaAbsensi = async function() {
             const ta = document.getElementById('absensi-filter-ta').value;
             const kelas = document.getElementById('absensi-filter-kelas').value;
             const tanggal = document.getElementById('absensi-filter-tanggal').value;
-            if(!kelas || !tanggal) return;
+            const key = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
+            const record = appState.absensi[key];
             
-            const docId = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
-            appState.absensi[docId] = window.currentAbsenRecords;
-            
-            if(!IS_PREVIEW) {
+            if(!record || Object.keys(record).length === 0) {
+                Swal.fire('Info', 'Belum ada data status absensi yang dipilih.', 'info'); return;
+            }
+
+            Swal.fire({title: 'Menyimpan Rekap...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() }});
+
+            if(!IS_PREVIEW && db) {
                 try {
-                    await db.collection("absensi").doc(docId).set(window.currentAbsenRecords);
-                    Swal.fire('Sukses', 'Data absensi berhasil disimpan.', 'success');
-                } catch(e) { Swal.fire('Error', 'Gagal menyimpan.', 'error'); }
-            } else {
-                Swal.fire('Sukses (Preview)', 'Data absensi tersimpan lokal.', 'success');
+                    const snap = await db.collection("absensi").where("ta", "==", ta).where("kelas", "==", kelas).where("tanggal", "==", tanggal).get();
+                    const batch = db.batch();
+                    snap.docs.forEach(d => batch.delete(d.ref)); // Clear old for update
+                    
+                    for (const [siswaId, status] of Object.entries(record)) {
+                        const siswa = appState.siswa.find(s => s.id === siswaId);
+                        if(siswa) {
+                            const newRef = db.collection("absensi").doc();
+                            batch.set(newRef, {
+                                ta, kelas, tanggal, siswaId, nama: siswa.nama, status, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                    }
+                    await batch.commit();
+                } catch(e) {
+                    Swal.fire('Error', 'Gagal menyimpan absensi ke cloud.', 'error');
+                    return;
+                }
             }
+            Swal.fire('Sukses', 'Data absensi berhasil disimpan.', 'success');
         }
 
-        window.setModeAbsensi = function(mode) {
-            if(window.filteredSiswaAbsenList.length === 0) { Swal.fire('Info', 'Pilih kelas terlebih dahulu.', 'info'); return; }
-            if(mode === 'sekaligus') {
-                document.getElementById('container-absen-sekaligus').classList.remove('hidden');
-                document.getElementById('btn-mode-sekaligus').className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-teal-600 text-white shadow-md cursor-pointer';
-                document.getElementById('btn-mode-satu').className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-transparent text-slate-500 hover:bg-slate-200 cursor-pointer';
-            } else {
-                window.currentAbsenIndex = 0; tampilkanModalAbsenIndividu();
-            }
+        window.exportAbsensiExcel = async function() {
+            const ta = document.getElementById('absensi-filter-ta').value;
+            const kelas = document.getElementById('absensi-filter-kelas').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            
+            if(!kelas || !tanggal) { Swal.fire('Peringatan', 'Pilih kelas dan tanggal terlebih dahulu!', 'warning'); return; }
+            
+            Swal.fire({title: 'Mengekspor...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() }});
+
+            let dataExport = [];
+            const listSiswa = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
+            const key = `${ta.replace('/','-')}_${kelas}_${tanggal}`;
+            
+            await fetchAbsensiData(ta, kelas, tanggal);
+            const record = appState.absensi[key] || {};
+
+            listSiswa.forEach(s => {
+                let status = record[s.id] || 'Belum Absen';
+                dataExport.push({ 'Tahun Ajaran': ta, 'Tanggal': tanggal, 'Kelas': s.kelas, 'Nama Siswa': s.nama, 'Status Kehadiran': status });
+            });
+
+            const ws = XLSX.utils.json_to_sheet(dataExport);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Rekap Absensi");
+            XLSX.writeFile(wb, `Rekap_Absensi_${kelas}_${tanggal}.xlsx`);
+            Swal.close();
         }
 
-        function tampilkanModalAbsenIndividu() {
-            const modal = document.getElementById('modal-absen-individu');
-            const siswa = window.filteredSiswaAbsenList[window.currentAbsenIndex];
-            if(!siswa) return;
+        // MODAL ABSEN SATU PERSATU
+        window.bukaModalAbsen = function() {
+            document.getElementById('modal-absen-individu').classList.remove('modal-hidden');
+            updateModalAbsenUI();
+        }
+        window.tutupModalAbsen = function() {
+            document.getElementById('modal-absen-individu').classList.add('modal-hidden');
+            currentAbsensiMode = '';
+        }
+        
+        function updateModalAbsenUI() {
+            if(currentAbsenList.length === 0) return;
+            const siswa = currentAbsenList[currentAbsenIndex];
             
             document.getElementById('absen-modal-nama').innerText = siswa.nama;
             document.getElementById('absen-modal-kelas').innerHTML = `<i class="fas fa-chalkboard text-teal-500 mr-1.5"></i> ${siswa.kelas}`;
             document.getElementById('absen-modal-foto').src = getSiswaPhoto(siswa.nama);
-            document.getElementById('absen-modal-counter').innerText = window.currentAbsenIndex + 1;
-            document.getElementById('absen-modal-total').innerText = window.filteredSiswaAbsenList.length;
             
-            const status = window.currentAbsenRecords[siswa.nama];
-            ['H','S','I','A'].forEach(s => {
-                const btn = document.getElementById(`btn-status-${s}`);
-                if(s === status) { btn.classList.add('ring-2', 'ring-teal-500', 'bg-teal-50'); btn.classList.remove('bg-white', 'border-slate-200'); } 
-                else { btn.classList.remove('ring-2', 'ring-teal-500', 'bg-teal-50'); btn.classList.add('bg-white', 'border-slate-200'); }
-            });
-            modal.classList.remove('modal-hidden');
-        }
+            document.getElementById('absen-modal-counter').innerText = currentAbsenIndex + 1;
+            document.getElementById('absen-modal-total').innerText = currentAbsenList.length;
 
-        window.pilihStatusIndividu = function(status) {
-            const siswa = window.filteredSiswaAbsenList[window.currentAbsenIndex];
-            window.currentAbsenRecords[siswa.nama] = status;
-            tampilkanModalAbsenIndividu(); // update UI color
-            renderAdminAbsensi(); // sync with background table
+            document.getElementById('btn-modal-prev').disabled = currentAbsenIndex === 0;
+            document.getElementById('btn-modal-prev').classList.toggle('opacity-50', currentAbsenIndex === 0);
             
-            setTimeout(() => {
-                if(window.currentAbsenIndex < window.filteredSiswaAbsenList.length - 1) { navModalAbsen(1); } 
-                else {
-                    Swal.fire({ title: 'Selesai', text: 'Semua siswa di kelas ini telah diabsen.', icon: 'success', showCancelButton: true, confirmButtonText: 'Simpan', cancelButtonText: 'Tutup' }).then((res) => {
-                        if(res.isConfirmed) { tutupModalAbsen(); simpanSemuaAbsensi(); }
-                    });
-                }
-            }, 300);
+            const isLast = currentAbsenIndex === currentAbsenList.length - 1;
+            const btnNext = document.getElementById('btn-modal-next');
+            if(isLast) {
+                btnNext.innerHTML = `<i class="fas fa-save mr-2"></i> Simpan Selesai`;
+                btnNext.classList.replace('bg-teal-600', 'bg-indigo-600');
+                btnNext.classList.replace('hover:bg-teal-700', 'hover:bg-indigo-700');
+                btnNext.classList.replace('border-teal-600', 'border-indigo-600');
+            } else {
+                btnNext.innerHTML = `Next <i class="fas fa-chevron-right ml-2"></i>`;
+                btnNext.classList.replace('bg-indigo-600', 'bg-teal-600');
+                btnNext.classList.replace('hover:bg-indigo-700', 'hover:bg-teal-700');
+                btnNext.classList.replace('border-indigo-600', 'border-teal-600');
+            }
+
+            const ta = document.getElementById('absensi-filter-ta').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            const key = `${ta.replace('/','-')}_${siswa.kelas}_${tanggal}`;
+            const record = appState.absensi[key] || {};
+            const status = record[siswa.id] || '';
+
+            const btns = ['H', 'S', 'I', 'A'];
+            const colors = {
+                'H': 'border-emerald-500 bg-emerald-50 shadow-md ring-2 ring-emerald-200',
+                'S': 'border-amber-500 bg-amber-50 shadow-md ring-2 ring-amber-200',
+                'I': 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200',
+                'A': 'border-red-500 bg-red-50 shadow-md ring-2 ring-red-200'
+            };
+
+            btns.forEach(b => {
+                const el = document.getElementById(`btn-status-${b}`);
+                el.className = `group py-4 rounded-[1.25rem] border bg-white text-slate-600 transition-all text-xs sm:text-sm font-extrabold flex flex-col items-center gap-2 cursor-pointer relative overflow-hidden ${status === b ? colors[b] : 'border-slate-200 hover:shadow-md'}`;
+            });
         }
 
         window.navModalAbsen = function(dir) {
-            const nextIdx = window.currentAbsenIndex + dir;
-            if(nextIdx >= 0 && nextIdx < window.filteredSiswaAbsenList.length) {
-                window.currentAbsenIndex = nextIdx; tampilkanModalAbsenIndividu();
+            if(dir === 1 && currentAbsenIndex === currentAbsenList.length - 1) {
+                tutupModalAbsen();
+                simpanSemuaAbsensi();
+                return;
             }
-        }
-        window.tutupModalAbsen = function() { document.getElementById('modal-absen-individu').classList.add('modal-hidden'); }
-
-        window.exportAbsensiExcel = function() {
-            const ta = document.getElementById('absensi-filter-ta').value; const kelas = document.getElementById('absensi-filter-kelas').value; const tanggal = document.getElementById('absensi-filter-tanggal').value;
-            if(!kelas || !tanggal) return Swal.fire('Oops', 'Pilih kelas dan tanggal terlebih dahulu!', 'warning');
-            
-            const siswaList = appState.siswa.filter(s => s.kelas === kelas).sort((a,b) => a.nama.localeCompare(b.nama));
-            if(siswaList.length === 0) return Swal.fire('Info', 'Tidak ada data siswa.', 'info');
-            
-            const wsData = [["Tahun Ajaran", ta], ["Kelas", kelas], ["Tanggal", tanggal], [], ["No", "Nama Lengkap", "Status Absensi"]];
-            siswaList.forEach((s, i) => {
-                const st = window.currentAbsenRecords[s.nama];
-                let stTxt = st==='H'?'Hadir':(st==='S'?'Sakit':(st==='I'?'Izin':(st==='A'?'Alpha':'-')));
-                wsData.push([i+1, s.nama, stTxt]);
-            });
-            const ws = XLSX.utils.aoa_to_sheet(wsData); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Absensi"); XLSX.writeFile(wb, `Absensi_${kelas}_${tanggal}.xlsx`);
+            currentAbsenIndex += dir;
+            if(currentAbsenIndex < 0) currentAbsenIndex = 0;
+            if(currentAbsenIndex >= currentAbsenList.length) currentAbsenIndex = currentAbsenList.length - 1;
+            updateModalAbsenUI();
         }
 
-        window.handleKirimPesan = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-pesan');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengirim...`; btn.disabled = true;
-
-            const kelas = document.getElementById('pesan-kelas').value;
-            const nama = document.getElementById('pesan-nama').value;
-            const panggilan = document.getElementById('pesan-panggilan').value;
-            const isi = document.getElementById('pesan-isi').value;
-            const fileInput = document.getElementById('pesan-foto');
+        window.pilihStatusIndividu = function(status) {
+            const siswa = currentAbsenList[currentAbsenIndex];
+            const ta = document.getElementById('absensi-filter-ta').value;
+            const tanggal = document.getElementById('absensi-filter-tanggal').value;
+            const key = `${ta.replace('/','-')}_${siswa.kelas}_${tanggal}`;
             
-            let base64Foto = "";
-            if(fileInput.files.length > 0) { base64Foto = await resizeAndCompressImage(fileInput.files[0]); }
+            if(!appState.absensi[key]) appState.absensi[key] = {};
+            appState.absensi[key][siswa.id] = status;
             
-            const newPesan = { kelas, nama, nama_panggilan: panggilan, isi, foto: base64Foto, timestamp: new Date().toISOString() };
-            
-            if(!IS_PREVIEW) {
-                try {
-                    await db.collection("pesan").add(newPesan);
-                    Swal.fire('Terkirim!', 'Pesan dan harapan belajarmu sudah sampai ke guru.', 'success');
-                } catch(err) { Swal.fire('Error', 'Gagal mengirim pesan.', 'error'); }
-            } else {
-                newPesan.id = "prev" + Date.now(); dummyPesan.unshift(newPesan);
-                Swal.fire('Terkirim (Preview)', 'Pesan berhasil disimpan.', 'success');
-            }
-            document.getElementById('form-pesan').reset();
-            btn.innerHTML = `<span>Kirim Pesan Sekarang</span> <i class="fas fa-paper-plane ml-3"></i>`; btn.disabled = false;
+            updateModalAbsenUI();
+            if(currentAbsenIndex < currentAbsenList.length - 1) setTimeout(() => navModalAbsen(1), 350);
         }
 
-        function resizeAndCompressImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader(); reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image(); img.src = e.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas'); const MAX_WIDTH = 500;
-                        const scale = img.width > MAX_WIDTH ? (MAX_WIDTH / img.width) : 1;
-                        canvas.width = img.width * scale; canvas.height = img.height * scale;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.6)); 
-                    };
-                };
-                reader.onerror = error => reject(error);
-            });
-        }
-
+        // KELOLA PESAN (SAPA GURU)
         window.renderAdminPesan = function() {
-            const filterKelas = document.getElementById('filter-kelas-pesan').value;
             const tbody = document.getElementById('admin-pesan-body'); tbody.innerHTML = '';
+            const filterKelas = document.getElementById('filter-kelas-pesan').value;
             
-            let list = [...appState.pesan];
-            if(filterKelas) list = list.filter(p => p.kelas === filterKelas);
-            window.filteredPesanList = list;
-            
-            if(list.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-500">Tidak ada pesan.</td></tr>`; return; }
-            
-            list.forEach((p, idx) => {
-                const d = new Date(p.timestamp); const time = `${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${d.getMinutes()}`;
-                const fotoSrc = p.foto ? p.foto : getFunnyAvatar(p.nama);
-                const shortIsi = p.isi.length > 30 ? p.isi.substring(0,30) + '...' : p.isi;
-                
-                tbody.innerHTML += `
-                <tr class="hover:bg-slate-50/50 transition">
-                    <td class="py-3 px-5 text-xs text-slate-500 font-bold">${time}</td>
-                    <td class="py-3 px-5 text-center"><img src="${fotoSrc}" class="w-10 h-10 rounded-full object-cover shadow-sm mx-auto bg-white border border-slate-200 cursor-pointer" onclick="bukaModalPesan(${idx})"></td>
-                    <td class="py-3 px-5"><p class="font-extrabold text-slate-700">${p.nama}</p><p class="text-[10px] font-bold text-slate-400">Panggilan: ${p.nama_panggilan}</p></td>
-                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded text-[10px] font-extrabold border border-indigo-100">${p.kelas}</span></td>
-                    <td class="py-3 px-5 text-sm italic text-slate-600">${shortIsi}</td>
-                    <td class="py-3 px-5 text-center"><button onclick="bukaModalPesan(${idx})" class="text-indigo-500 hover:text-indigo-700 bg-indigo-50 p-2 rounded-lg"><i class="fas fa-eye"></i></button></td>
+            let pesanList = appState.pesan;
+            if(filterKelas) pesanList = pesanList.filter(p => p.kelas === filterKelas);
+
+            if(pesanList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400 font-medium">Belum ada pesan masuk.</td></tr>`;
+                return;
+            }
+
+            pesanList.forEach((p, idx) => {
+                const fotoUrl = p.foto || getFunnyAvatar(p.nama);
+                const shortMsg = p.isi.length > 50 ? p.isi.substring(0, 50) + '...' : p.isi;
+                tbody.innerHTML += `<tr>
+                    <td class="py-3 px-5 text-xs text-slate-500">${p.timestamp || '-'}</td>
+                    <td class="py-3 px-5 text-center"><img src="${fotoUrl}" class="w-10 h-10 rounded-full mx-auto object-cover border"></td>
+                    <td class="py-3 px-5">
+                        <div class="font-bold text-slate-800">${p.nama}</div>
+                        <div class="text-[10px] text-slate-400">Panggilan: ${p.nama_panggilan}</div>
+                    </td>
+                    <td class="py-3 px-5"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-[10px] border font-bold">${p.kelas}</span></td>
+                    <td class="py-3 px-5 text-xs text-slate-600 whitespace-normal min-w-[200px]">${shortMsg}</td>
+                    <td class="py-3 px-5 text-center whitespace-nowrap">
+                        <button onclick="bukaModalPesan(${idx})" class="text-indigo-500 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition mr-1" title="Lihat Detail"><i class="fas fa-eye"></i></button>
+                        <button onclick="hapusPesan('${p.id}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition" title="Hapus"><i class="fas fa-trash"></i></button>
+                    </td>
                 </tr>`;
             });
         }
 
-        window.bukaModalPesan = function(idx) {
-            window.currentPesanIndex = idx;
-            const p = window.filteredPesanList[idx];
-            document.getElementById('pesan-modal-foto').src = p.foto ? p.foto : getFunnyAvatar(p.nama);
-            document.getElementById('pesan-modal-kelas').innerText = p.kelas;
-            document.getElementById('pesan-modal-nama').innerText = p.nama;
-            document.getElementById('pesan-modal-panggilan-text').innerText = p.nama_panggilan;
-            document.getElementById('pesan-modal-isi').innerText = p.isi;
-            
-            const d = new Date(p.timestamp); 
-            document.getElementById('pesan-modal-waktu').innerHTML = `<i class="fas fa-clock mr-1.5"></i> ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
-            
-            document.getElementById('pesan-modal-counter').innerText = idx + 1;
-            document.getElementById('pesan-modal-total').innerText = window.filteredPesanList.length;
-            
-            document.getElementById('btn-pesan-prev').disabled = idx === 0;
-            document.getElementById('btn-pesan-next').disabled = idx === window.filteredPesanList.length - 1;
+        window.hapusPesan = async function(id) {
+            if(confirm('Hapus pesan ini secara permanen?')) {
+                if(!IS_PREVIEW && db) await db.collection("pesan").doc(id).delete();
+                appState.pesan = appState.pesan.filter(p => p.id !== id);
+                renderAdminPesan(); renderAdminDashboard();
+            }
+        }
+
+        let currentPesanIndex = 0;
+        let currentFilteredPesan = [];
+
+        window.bukaModalPesan = function(index) {
+            const filterKelas = document.getElementById('filter-kelas-pesan').value;
+            currentFilteredPesan = filterKelas ? appState.pesan.filter(p => p.kelas === filterKelas) : appState.pesan;
+            currentPesanIndex = index;
             
             document.getElementById('modal-pesan-detail').classList.remove('modal-hidden');
+            updateModalPesanUI();
+        }
+
+        window.tutupModalPesan = function() {
+            document.getElementById('modal-pesan-detail').classList.add('modal-hidden');
+        }
+
+        function updateModalPesanUI() {
+            if(currentFilteredPesan.length === 0) return;
+            const p = currentFilteredPesan[currentPesanIndex];
+            
+            document.getElementById('pesan-modal-foto').src = p.foto || getFunnyAvatar(p.nama);
+            document.getElementById('pesan-modal-nama').innerText = p.nama;
+            document.getElementById('pesan-modal-kelas').innerText = p.kelas;
+            document.getElementById('pesan-modal-panggilan-text').innerText = p.nama_panggilan;
+            document.getElementById('pesan-modal-waktu').innerHTML = `<i class="fas fa-clock mr-1.5"></i> ${p.timestamp || '-'}`;
+            document.getElementById('pesan-modal-isi').innerText = p.isi;
+            
+            document.getElementById('pesan-modal-counter').innerText = currentPesanIndex + 1;
+            document.getElementById('pesan-modal-total').innerText = currentFilteredPesan.length;
+
+            document.getElementById('btn-pesan-prev').disabled = currentPesanIndex === 0;
+            document.getElementById('btn-pesan-next').disabled = currentPesanIndex === currentFilteredPesan.length - 1;
         }
 
         window.navModalPesan = function(dir) {
-            const nextIdx = window.currentPesanIndex + dir;
-            if(nextIdx >= 0 && nextIdx < window.filteredPesanList.length) bukaModalPesan(nextIdx);
+            currentPesanIndex += dir;
+            if(currentPesanIndex < 0) currentPesanIndex = 0;
+            if(currentPesanIndex >= currentFilteredPesan.length) currentPesanIndex = currentFilteredPesan.length - 1;
+            updateModalPesanUI();
         }
-        window.tutupModalPesan = function() { document.getElementById('modal-pesan-detail').classList.add('modal-hidden'); }
 
-        window.downloadPesanZip = function() {
-            if(appState.pesan.length === 0) return Swal.fire('Info', 'Tidak ada pesan.', 'info');
-            Swal.fire({title: 'Memproses...', text: 'Membuat arsip ZIP...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+        window.downloadPesanZip = async function() {
+            if(typeof JSZip === 'undefined') { Swal.fire('Error', 'Library JSZip gagal dimuat.', 'error'); return; }
+            const filterKelas = document.getElementById('filter-kelas-pesan').value;
+            const pList = filterKelas ? appState.pesan.filter(p => p.kelas === filterKelas) : appState.pesan;
             
-            const zip = new JSZip(); const folderFoto = zip.folder("Foto_Siswa");
-            let csvContent = "Waktu,Kelas,Nama Lengkap,Panggilan,Isi Pesan\n";
+            if(pList.length === 0) { Swal.fire('Kosong', 'Tidak ada pesan untuk diunduh.', 'info'); return; }
+
+            Swal.fire({title: 'Membuat File ZIP...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() }});
             
-            appState.pesan.forEach((p, index) => {
-                const cleanIsi = (p.isi || '').replace(/\n/g, ' ').replace(/,/g, ';');
-                csvContent += `${p.timestamp},${p.kelas},${p.nama},${p.nama_panggilan},${cleanIsi}\n`;
-                if(p.foto && p.foto.startsWith('data:image')) {
-                    const base64Data = p.foto.split(',')[1];
-                    folderFoto.file(`${p.kelas}_${p.nama.replace(/\s/g, '_')}_${index}.jpg`, base64Data, {base64: true});
+            const zip = new JSZip();
+            let csvContent = "Waktu,Nama Lengkap,Panggilan,Kelas,Pesan,URL Foto\n";
+            const folderFoto = zip.folder("Foto_Siswa");
+
+            for(let i=0; i<pList.length; i++) {
+                const p = pList[i];
+                const safeName = (p.nama || 'Siswa').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                let fotoName = '';
+                
+                if(p.foto && p.foto.startsWith('http')) {
+                    try {
+                        const res = await fetch(p.foto);
+                        const blob = await res.blob();
+                        fotoName = `${safeName}_${i}.jpg`;
+                        folderFoto.file(fotoName, blob);
+                    } catch(e) { console.warn("Abaikan: Gagal download foto (Kemungkinan CORS)", p.foto); }
                 }
-            });
-            zip.file("Data_Pesan.csv", csvContent);
+                
+                const row = `"${p.timestamp || ''}","${p.nama}","${p.nama_panggilan}","${p.kelas}","${p.isi.replace(/"/g, '""')}","${p.foto || ''}"\n`;
+                csvContent += row;
+            }
+            
+            zip.file("Rekap_Data_Pesan.csv", csvContent);
             zip.generateAsync({type:"blob"}).then(function(content) {
-                saveAs(content, "Data_Pesan_Siswa.zip"); Swal.close();
+                saveAs(content, `Pesan_Masuk_${filterKelas || 'Semua_Kelas'}.zip`);
+                Swal.close();
             });
+        }
+
+        window.handleKirimPesan = async function(e) {
+            e.preventDefault();
+            const btnSubmit = document.getElementById('btn-submit-pesan');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...`;
+
+            try {
+                const data = {
+                    kelas: document.getElementById('pesan-kelas').value,
+                    nama: document.getElementById('pesan-nama').value,
+                    nama_panggilan: document.getElementById('pesan-panggilan').value,
+                    isi: document.getElementById('pesan-isi').value,
+                    timestamp: new Date().toLocaleString('id-ID')
+                };
+
+                const fileInput = document.getElementById('pesan-foto');
+                
+                if(!IS_PREVIEW && db) {
+                    if(fileInput.files.length > 0 && storage) {
+                        const file = fileInput.files[0];
+                        const storageRef = storage.ref(`foto_siswa/${Date.now()}_${file.name}`);
+                        const snapshot = await storageRef.put(file);
+                        data.foto = await snapshot.ref.getDownloadURL();
+                    } else {
+                        data.foto = ""; 
+                    }
+                    
+                    const ref = await db.collection("pesan").add(data);
+                    data.id = ref.id;
+                } else {
+                    data.id = "temp_" + Date.now();
+                    data.foto = fileInput.files.length > 0 ? URL.createObjectURL(fileInput.files[0]) : "";
+                }
+
+                appState.pesan.unshift(data); 
+                Swal.fire('Terkirim!', 'Pesan Anda berhasil disampaikan ke guru.', 'success');
+                document.getElementById('form-pesan').reset();
+                filterSiswaByKelas(); // reset dropdown
+                
+                if(appState.isLoggedIn) renderAdminPesan(); // Refresh panel admin
+                
+            } catch(err) {
+                Swal.fire('Gagal', 'Terjadi kesalahan saat mengirim pesan.', 'error');
+                console.error(err);
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = `<span>Kirim Pesan Sekarang</span> <i class="fas fa-paper-plane ml-3"></i>`;
+            }
+        }
+
+        // KELOLA MATERI & PENGATURAN
+        function renderAdminMateri() {
+            const mt = appState.materiTugas || {};
+            document.getElementById('materi-link-input').value = mt.materi || '';
+            document.getElementById('tugas-link-input').value = mt.tugas || '';
+        }
+
+        window.handleUpdateMateriTugas = async function(e) {
+            e.preventDefault();
+            const data = {
+                materi: document.getElementById('materi-link-input').value,
+                tugas: document.getElementById('tugas-link-input').value
+            };
+            if(!IS_PREVIEW && db) await db.collection("pengaturan").doc("materi_tugas").set(data);
+            appState.materiTugas = data;
+            renderPublicUI();
+            Swal.fire('Sukses', 'Materi & Tugas berhasil disinkronkan.', 'success');
+        }
+
+        window.handleUbahPassword = async function(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('pwd-baru').value;
+            const p2 = document.getElementById('pwd-konfirm').value;
+            if(p1.length < 6) { Swal.fire('Gagal', 'Password harus terdiri minimal 6 karakter', 'error'); return; }
+            if(p1 !== p2) { Swal.fire('Gagal', 'Password tidak cocok', 'error'); return; }
+            
+            if(!IS_PREVIEW && auth && auth.currentUser) {
+                try {
+                    await auth.currentUser.updatePassword(p1);
+                    Swal.fire('Sukses', 'Password berhasil diubah', 'success');
+                    document.getElementById('form-ubah-password').reset();
+                } catch(err) {
+                    Swal.fire('Error', 'Gagal merubah password. Silahkan logout dan login kembali terlebih dahulu.', 'error');
+                }
+            } else if (IS_PREVIEW) {
+                Swal.fire('Sukses', 'Simulasi ubah password berhasil (Mode Preview).', 'success');
+            }
         }
     </script>
 </body>
